@@ -83,50 +83,95 @@ font-family: 'Poppins', sans-serif;
 @stop
 @section('content')
   {{--  --}}
-  <div class="card">
-    <div class="card-body">
-        <div class="container text-center m-0 p-0 bg-black">
-            <div class="row col-12 m-0 p-0">
-              <div class="col-sm-6 col-md-3 cold-lg-3 rounded-1 pt-3 ">
-                <div class="card">
-                    <div class="card-body">
-                 <p style="font-size: 18px " class="fw-bold"> <i class="fa-solid fa-chart-line text-cyan-50"></i> TOTAL DE SOLICITUDES RECIBIDAS</p>
-                 <p style="font-size: 38px " class="fw-bold">{{$total->total}}</p>
-                    </div>
-
-                    
+    <div class="card">
+      <div class="card-body">
+          <div class="container-fluid text-center m-0 p-0">
+              <div class="row col-12 m-0 p-0">
+                <div class="col-sm-6 col-md-4 cold-lg-4 rounded-1 pt-3 ">
+                  <div class="card">
+                      <div class="card-body">
+                        <p style="font-size: 18px " class="fw-bold"> <i class="fa-solid fa-chart-line text-cyan-50"></i> SOLICITUDES RECIBIDAS</p>
+                        <p style="font-size: 38px " class="fw-bold">{{$total->total}}</p>
+                      </div>
                   </div>
-              </div>
-              <div class="col-sm-6 col-md-3 cold-lg-3 rounded-1   pt-3" >
-                <div class="card">
-                    <div class="card-body">
-                        <p style="font-size: 18px"  class="fw-bold"> <i class="fa-solid fa-bell"></i> TOTAL DE SOLICITUDES TERMINADAS</p>
-                        <p style="font-size: 38px " class="fw-bold">{{$terminadas->total}}</p>
-                        
+                </div>
+                <div class="col-sm-6 col-md-4 cold-lg-4 rounded-1   pt-3" >
+                  <div class="card">
+                      <div class="card-body">
+                          <p style="font-size: 18px"  class="fw-bold"> <i class="fa-solid fa-bell"></i> SOLICITUDES TERMINADAS</p>
+                          <p style="font-size: 38px " class="fw-bold">{{$terminadas->total}}</p>
+                          
+                      </div>
                     </div>
-                  </div>
-              </div>
-              <div class="col-sm-6 col-md-3 cold-lg-3 rounded-1  pt-3" >
-                <div class="card">
-                    <div class="card-body">
-                        <p style="font-size: 18px" class="fw-bold"> <i class="fa-solid fa-gauge"></i>  TOTAL DE SOLICITUDES EN PROCESO</p>
-                         <p style="font-size: 38px " class="fw-bold">{{$proceso->total}}</p>
+                </div>
+                <div class="col-sm-6 col-md-4 cold-lg-4 rounded-1  pt-3" >
+                  <div class="card">
+                      <div class="card-body">
+                          <p style="font-size: 18px" class="fw-bold"> <i class="fa-solid fa-gauge"></i>  SOLICITUDES EN PROCESO</p>
+                           <p style="font-size: 38px " class="fw-bold">{{$proceso->total}}</p>
+                      </div>
                     </div>
-                  </div>
-              </div>
-              <div class="col-sm-6 col-md-3 cold-lg-2 rounded-1   pt-3" >
-                <div class="card">
-                    <div class="card-body">
-                        <p style="font-size: 18px" class="fw-bold"><i class="fa-solid fa-stopwatch"></i> TOTAL DE TIEMPO INVERTIDO</p>
-                        <p style="font-size: 38px " class="fw-bold">  {{number_format($incidencias3->tiempo2/60, 2)}} hrs</p>
+                </div>
+                <div class="col-sm-6 col-md-2 cold-lg-2 rounded-1   pt-3">
+  
+                </div>
+                <div class="col-sm-6 col-md-4 cold-lg-4 rounded-1   pt-3" >
+                  <div class="card h-100">
+                      <div class="card-body">
+                          <p style="font-size: 18px" class="fw-bold"><i class="fa-solid fa-stopwatch"></i> TIEMPO INVERTIDO EN ENTREGA DE EQUIPOS NUEVOS</p>
+                          <p style="font-size: 38px " class="fw-bold">  {{$tiempoord}} hrs/min</p>
+                      </div>
                     </div>
-                  </div>
+                </div>
+                
+                <div class="col-sm-6 col-md-4 cold-lg-4 rounded-1   pt-3" >
+                  <div class="card h-100">
+                      <div class="card-body">
+                          <p style="font-size: 18px" class="fw-bold"><i class="fa-solid fa-stopwatch"></i> TIEMPO INVERTIDO EN SOPORTES</p>
+                          <p style="font-size: 38px " class="fw-bold">  {{($tiemposop)}} hrs/min</p>
+                          <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#DetallesModal" >Detalles</button>
+                      </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-2 cold-lg-2 rounded-1   pt-3" >
+  
+                </div>
               </div>
             </div>
+      </div>
+  
+  
+      
+      <div class="3">
+          <div class="row">
+            <div class="col-sm-12 col-md-4 col-lg-4 rounded-1   pt-3">
+              <figure class="highcharts-figure">
+                  <div id="containerPrioridad"></div> 
+              </figure>
+            </div>
+            <div class="col-sm-12 col-md-8 col-lg-8 rounded-1   pt-3">
+              <figure class="highcharts-figure">
+                  <div id="containerX" class="chart-container"></div>
+              </figure>
+            </div>
+            <div class="col-sm-12 col-md-8 col-lg-8 rounded-1   pt-3">
+              <figure class="highcharts-figure">
+                <div id="containers" class="chart-container"></div>
+              </figure>
+            </div>
+            <div class="col-sm-12 col-md-4 col-lg-4 rounded-1   pt-3">
+              <figure class="highcharts-figure">
+                <div id="containeruser" class="chart-container"></div>
+              </figure>
+            </div>       
           </div>
-
-         
+        </div>
+        
+      
     </div>
+    
+  
+  
     <div class="3">
         <div class="row">
           <div class="col-sm-12 col-md-4 col-lg-4 rounded-1   pt-3">
@@ -153,6 +198,64 @@ font-family: 'Poppins', sans-serif;
         </div>
       </div>
     
+  </div>
+
+  <div class="modal fade " id="DetallesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header ">
+          <div class="container text-center " >
+            <h1 class=" modal-title fs-2 " id="exampleModalLabel">Detalles de tiempo invertido en soportes.</h1>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="2">
+            <div class="row">
+                <div class="col-12 col-lg-6" >         
+                  <div id="container" style="height: 500px"></div>       
+                </div>
+                <div class="col-12 col-lg-6">
+                  <div class="tab-pane table-responsive" id="area">
+                    <table class="records_list table table-striped table-bordered table-hover rounded-md table-responsive"   id="mydatatable2">
+                      <thead>
+                          <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal rounded-lg" style="color:#516407">
+                              <th class="py-3 px-6 text-left">Categoria</th>
+                              <th class="py-3 px-6 text-left">Tiempo invertido por categoria</th>
+                              <th class="py-3 px-6 text-left">Promedio de tiempo por incidencia</th>
+                          </tr>
+                      </thead>
+                     
+                      <tbody class="text-gray-600 text-sm font-light">
+                      
+                          @foreach ($tiemincidencias as $tiemincidencias)
+                          <tr class="border-b border-gray-200 hover:bg-gray-100">
+                              <td class="py-3 px-6 text-left whitespace-nowrap">
+                                  <div class="flex items-center">
+                                      <span class="font-light">{{ $tiemincidencias->t_incidencia}}</span>
+                                  </div>
+                              </td>
+                              <td class="py-3 px-6 text-left whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <span class="font-light"> {{floor($tiemincidencias->tiempo3 / 60).':'.($tiemincidencias->tiempo3 -   floor($tiemincidencias->tiempo3 / 60) * 60) }} hr/min</span>
+                                </div>
+                              </td>
+                              <td class="py-3 px-6 text-left whitespace-nowrap">
+                                <div class="flex items-center">
+                                  <span class="font-light"> {{floor($tiemincidencias->promedioinc / 60).':'.($tiemincidencias->promedioinc -   floor($tiemincidencias->promedioinc / 60) * 60) }} hr/min</span>
+                                </div>
+                              </td>
+                          </tr>
+                          @endforeach
+                      </tbody>
+                    </table>
+                  </div>
+                </div>    
+            </div>
+           
+        </div>  
+      </div>
+    </div>
   </div>
 @stop
 
@@ -275,6 +378,7 @@ Highcharts.chart('containerPrioridad', {
 
 
 
+
 const chart = new Highcharts.Chart({
     chart: {
         renderTo: 'containerX',
@@ -292,8 +396,7 @@ const chart = new Highcharts.Chart({
         labels: {
             rotation: -45,
             style: {
-                fontSize: '13px',
-                fontFamily: 'Verdana, sans-serif'
+                fontSize: '10px',
             }
         }
     },
@@ -310,11 +413,7 @@ const chart = new Highcharts.Chart({
         text: 'Solicitudes de incidencias registradas',
         align: 'center'
     },
-    subtitle: {
-        text: 'Soportes realizados por tipo de incidencia. ',
-      
-        align: 'center'
-    },
+  
     legend: {
         enabled: false
     },
@@ -325,16 +424,14 @@ const chart = new Highcharts.Chart({
     },
     series: [{
         data: <?= $datosi ?>,
-        colorByPoint: true,
         dataLabels: {
                enabled: true,
-               rotation: -90,
-               color: '#FFFFFF',    
-               align: 'right',
-               y: 10,
+               rotation: 0,
+               color: '#000000',    
+               align: 'center',
+               y: 24,
                style: {
-                   fontSize: '13px',
-                   fontFamily: 'Verdana, sans-serif',  
+                   fontSize: '12px',
                }
            }
     }]
@@ -363,7 +460,7 @@ showValues();
           type: 'column'
       },
       title: {
-          text: 'Comparativa de incidencias anual'
+          text: 'Incidencias registradas por mes en el año.'
       },
      
       xAxis: {
@@ -469,18 +566,16 @@ chart: {
        
 },
 title: {
-   text: 'Soportes'
+   text: 'Soportes en el periodo realizados por tecnico'
 },
 subtitle: {
-   text: 'Soportes del mes realizados por usuarios'
 },
 xAxis: {
    type: 'category',
    labels: {
        rotation: -45,
        style: {
-           fontSize: '13px',
-           fontFamily: 'Verdana, sans-serif'
+           fontSize: '12px',
        }
    }
 },
@@ -498,6 +593,7 @@ series: [{
    name: 'Soportes Finalizados',
    data: <?= $datos ?>,
    colors:'#B49FDC',
+
    dataLabels: {
        enabled: true,
        rotation: 5,
@@ -505,18 +601,57 @@ series: [{
 
        align: 'right',
      //  format: '{point.y:.1f}', // one decimal
-       y: 10, // 10 pixels down from the top
+       y: 4, // 10 pixels down from the top
        style: {
            fontSize: '13px',
-           fontFamily: 'Verdana, sans-serif',
           
        }
    }
 },
-
-
-
 ]
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+        const chart = Highcharts.chart('container', {
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: 'Incidencias por categoria'
+            },
+            xAxis: {
+              type: 'category',
+              labels: {
+                style: {
+                    fontSize: '9px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+              }
+            },
+            yAxis: {
+                title: {
+                    text: 'Cantidad'
+                }
+            },
+            tooltip: {
+                headerFormat: '<b>{point.key}</b><br>',
+                pointFormat: 'Total: {point.y}'
+            },
+            legend: {
+                enabled: false
+            },            
+            series: [{
+                data: <?= $datosd ?>,
+                colorByPoint: true,
+                dataLabels: {
+                      style: {
+                          fontSize: '13px',
+                          fontFamily: 'Verdana, sans-serif',  
+                      }
+                  }
+            }]
+        });
 });
 </script>
 @stop

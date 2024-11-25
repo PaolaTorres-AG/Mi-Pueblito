@@ -737,111 +737,210 @@ return redirect()->back()->withDanger('FALLA EN LA ACTUALIZACION'.$e.' ');
 }
    }
 
-     public function IncidenciasFiltro(Request $request)
-{
-    
-    $total=DB::table('soportes')->select(DB::raw('COUNT(id) as total'))->whereBetween(DB::raw('DATE(created_at)'), [$request->de, $request->hasta])->where('estatus','!=','CANCELADO')->first();
-    $terminadas=DB::table('soportes')->select(DB::raw('COUNT(id) as total'))->whereBetween(DB::raw('DATE(created_at)'), [$request->de, $request->hasta])->where('estatus','=','FINALIZADO')->first();
-    $proceso=DB::table('soportes')->select(DB::raw('COUNT(id) as total'))->whereBetween(DB::raw('DATE(created_at)'), [$request->de, $request->hasta])->where('estatus','!=','FINALIZADO')->where('estatus','!=','CANCELADO')->first();
-    $prioridad = DB::table('soportes')->select( 'prioridad',DB::raw('COUNT(id) as tot'))->whereBetween(DB::raw('DATE(created_at)'), [$request->de, $request->hasta])->where('estatus','!=','CANCELADO')->groupBy('prioridad')->get();
-    $prioriadg=[];
-    foreach($prioridad as $prioridad){
-       $prioriadg[]=[$prioridad->prioridad, floatval($prioridad->tot)];
-          }
-  
-          $comparacion=DB::select("SELECT
-          SUM(CASE WHEN MONTH(soportes.created_at) = 1 THEN 1 ELSE 0 END) AS Ene,
-          SUM(CASE WHEN MONTH(soportes.created_at) = 2 THEN 1 ELSE 0 END) AS Feb,
-          SUM(CASE WHEN MONTH(soportes.created_at) = 3 THEN 1 ELSE 0 END) AS Mar,
-          SUM(CASE WHEN MONTH(soportes.created_at) = 4 THEN 1 ELSE 0 END) AS Abr,
-          SUM(CASE WHEN MONTH(soportes.created_at) = 5 THEN 1 ELSE 0 END) AS May,
-          SUM(CASE WHEN MONTH(soportes.created_at) = 6 THEN 1 ELSE 0 END) AS Jun,
-          SUM(CASE WHEN MONTH(soportes.created_at) = 7 THEN 1 ELSE 0 END) AS Jul,
-          SUM(CASE WHEN MONTH(soportes.created_at) = 8 THEN 1 ELSE 0 END) AS Ago,
-          SUM(CASE WHEN MONTH(soportes.created_at) = 9 THEN 1 ELSE 0 END) AS Sep, 
-          SUM(CASE WHEN MONTH(soportes.created_at) = 10 THEN 1 ELSE 0 END) AS Oct,
-          SUM(CASE WHEN MONTH(soportes.created_at) = 11 THEN 1 ELSE 0 END) AS Nov,
-          SUM(CASE WHEN MONTH(soportes.created_at) = 12 THEN 1 ELSE 0 END) AS Dic
-          FROM soportes 
- WHERE  DATE(soportes.created_at) between '$request->de' and '$request->hasta' and estatus!='CANCELADO' ");
-          $datosH=[];
-          foreach($comparacion as $comparacion){
-              $datosH[] = [
-                  'name'=> "Mes",
-                        'data'=> [floatval($comparacion->Ene),floatval($comparacion->Feb),floatval($comparacion->Mar),floatval($comparacion->Abr),floatval($comparacion->May),floatval($comparacion->Jun),floatval($comparacion->Jul),floatval($comparacion->Ago),floatval($comparacion->Sep),floatval($comparacion->Oct),floatval($comparacion->Nov),floatval($comparacion->Dic)],
-                       ];
-      }
-      $incidencias = DB::table('soportes')->select( 't_incidencia',DB::raw('COUNT(t_incidencia) as tot'))->whereBetween(DB::raw('DATE(created_at)'), [$request->de, $request->hasta])->groupBy('t_incidencia')->get();
-    //////////////////////////////////////////////////////////////////// 
-    $incidencias3 = DB::table('soportes')->select(DB::raw('sum(t_incidencia) as tot2'),DB::raw('sum(TIMESTAMPDIFF(MINUTE,fecha_final,fecha_inicial)) AS tiempo2'))->where('estatus','=','FINALIZADO')->whereBetween(DB::raw('DATE(created_at)'), [$request->de, $request->hasta])->first();
+   public function IncidenciasFiltro(Request $request)
+   {
+       
+       $total=DB::table('soportes')->select(DB::raw('COUNT(id) as total'))->whereBetween(DB::raw('DATE(created_at)'), [$request->de, $request->hasta])->where('estatus','!=','CANCELADO')->first();
+       $terminadas=DB::table('soportes')->select(DB::raw('COUNT(id) as total'))->whereBetween(DB::raw('DATE(created_at)'), [$request->de, $request->hasta])->where('estatus','=','FINALIZADO')->first();
+       $proceso=DB::table('soportes')->select(DB::raw('COUNT(id) as total'))->whereBetween(DB::raw('DATE(created_at)'), [$request->de, $request->hasta])->where('estatus','!=','FINALIZADO')->where('estatus','!=','CANCELADO')->first();
+       $prioridad = DB::table('soportes')->select( 'prioridad',DB::raw('COUNT(id) as tot'))->whereBetween(DB::raw('DATE(created_at)'), [$request->de, $request->hasta])->where('estatus','!=','CANCELADO')->groupBy('prioridad')->get();
+       $prioriadg=[];
+       foreach($prioridad as $prioridad){
+          $prioriadg[]=[$prioridad->prioridad, floatval($prioridad->tot)];
+             }
+     
+             $comparacion=DB::select("SELECT
+             SUM(CASE WHEN MONTH(soportes.created_at) = 1 THEN 1 ELSE 0 END) AS Ene,
+             SUM(CASE WHEN MONTH(soportes.created_at) = 2 THEN 1 ELSE 0 END) AS Feb,
+             SUM(CASE WHEN MONTH(soportes.created_at) = 3 THEN 1 ELSE 0 END) AS Mar,
+             SUM(CASE WHEN MONTH(soportes.created_at) = 4 THEN 1 ELSE 0 END) AS Abr,
+             SUM(CASE WHEN MONTH(soportes.created_at) = 5 THEN 1 ELSE 0 END) AS May,
+             SUM(CASE WHEN MONTH(soportes.created_at) = 6 THEN 1 ELSE 0 END) AS Jun,
+             SUM(CASE WHEN MONTH(soportes.created_at) = 7 THEN 1 ELSE 0 END) AS Jul,
+             SUM(CASE WHEN MONTH(soportes.created_at) = 8 THEN 1 ELSE 0 END) AS Ago,
+             SUM(CASE WHEN MONTH(soportes.created_at) = 9 THEN 1 ELSE 0 END) AS Sep, 
+             SUM(CASE WHEN MONTH(soportes.created_at) = 10 THEN 1 ELSE 0 END) AS Oct,
+             SUM(CASE WHEN MONTH(soportes.created_at) = 11 THEN 1 ELSE 0 END) AS Nov,
+             SUM(CASE WHEN MONTH(soportes.created_at) = 12 THEN 1 ELSE 0 END) AS Dic
+             FROM soportes 
+    WHERE  DATE(soportes.created_at) between '$request->de' and '$request->hasta' and estatus!='CANCELADO' ");
+             $datosH=[];
+             foreach($comparacion as $comparacion){
+                 $datosH[] = [
+                     'name'=> "Mes",
+                           'data'=> [floatval($comparacion->Ene),floatval($comparacion->Feb),floatval($comparacion->Mar),floatval($comparacion->Abr),floatval($comparacion->May),floatval($comparacion->Jun),floatval($comparacion->Jul),floatval($comparacion->Ago),floatval($comparacion->Sep),floatval($comparacion->Oct),floatval($comparacion->Nov),floatval($comparacion->Dic)],
+                          ];
+         }
+       $incidencias = DB::table(table: 'soportes')->select( 't_incidencia',DB::raw('COUNT(t_incidencia) as tot'))->whereBetween(DB::raw('DATE(created_at)'), [$request->de, $request->hasta])->where('estatus','!=','CANCELADO')->groupBy('t_incidencia')->get();
+         //consulta para la grafica de detalles por tiempo de soporte.
+       $Detalleincidencias = DB::table('soportes')
+           ->select( 't_incidencia',DB::raw('COUNT(t_incidencia) as tot'))
+           ->where('estatus','FINALIZADO')
+           ->whereBetween(DB::raw('DATE(created_at)'), [$request->de, $request->hasta])
+           ->whereNotIn('t_incidencia', [ 'Solicitud de equipo de computo nuevo','Solicitud de ordenador'])
+           ->groupBy('t_incidencia')
+           ->get();
    
-      $datos=[];
-      $pend=[];
-      $atr=[];
-      $inc=[];
-    
-              foreach($incidencias as $incidencias){
-               $inc[]=[$incidencias->t_incidencia, floatval($incidencias->tot)];
-                  }
-                   $users = DB::table('soportes')->select( 'asignado',DB::raw('COUNT(asignado) as tot'))->where('estatus','FINALIZADO')->whereBetween(DB::raw('DATE(created_at)'), [$request->de, $request->hasta])->groupBy('asignado')->get();
-                  $datos=[];
-                  foreach($users as $users){
-                     $datos[]=[$users->asignado, floatval($users->tot)];
-                        }
-      return view('ti.IncidenciasGraficas',["datos" => json_encode($datos),"datosp" => json_encode($pend),"datosa" => json_encode($atr),"datosi" => json_encode($inc),"prioridad" => json_encode($prioriadg),"datosH" => json_encode($datosH)],compact('incidencias3','total','terminadas','proceso','prioridad'));
+       //////////////////////////////////////////////////////////////////// 
+       $incidencias3 = DB::table('soportes')->select(DB::raw('sum(t_incidencia) as tot2'),DB::raw('sum(TIMESTAMPDIFF(MINUTE,fecha_inicial,fecha_final)) AS tiempo2'))->where('estatus','=','FINALIZADO')->whereNotIn('t_incidencia', ['Solicitud de equipo de computo nuevo','Solicitud de ordenador'])->whereBetween(DB::raw('DATE(created_at)'), [$request->de, $request->hasta])->first();
+        //Consulta para medir tiempo por categoria de tiempo reportada para el datatable de detalles.
+       $tiemincidencias = DB::table('soportes')
+           ->select('t_incidencia',DB::raw('SUM(TIMESTAMPDIFF(MINUTE,fecha_inicial,fecha_final)) AS tiempo3 ') ,DB::raw('COUNT(t_incidencia) as tot'),DB::raw('SUM(TIMESTAMPDIFF(MINUTE, fecha_inicial, fecha_final)) / COUNT(t_incidencia) AS promedioinc'))
+           ->where('estatus','FINALIZADO')
+           ->whereBetween(DB::raw('DATE(created_at)'), [$request->de, $request->hasta])
+           ->whereNotIn('t_incidencia', ['Solicitud de equipo de computo nuevo','Solicitud de ordenador']) 
+           ->groupBy('t_incidencia')
+           ->get();
    
-   }
-public function Incidencias()
-{
- $total=DB::table('soportes')->select(DB::raw('COUNT(id) as total'))->whereRaw('MONTH(created_at) = MONTH(now())')->whereRaw('YEAR(created_at) = YEAR(now())')->first();
- $terminadas=DB::table('soportes')->select(DB::raw('COUNT(id) as total'))->whereRaw('MONTH(created_at) = MONTH(now())')->whereRaw('YEAR(created_at) = YEAR(now())')->where('estatus','=','FINALIZADO')->first();
- $proceso=DB::table('soportes')->select(DB::raw('COUNT(id) as total'))->whereRaw('MONTH(created_at) = MONTH(now())')->whereRaw('YEAR(created_at) = YEAR(now())')->where('estatus','!=','FINALIZADO')->first();
- $prioridad = DB::table('soportes')->select( 'prioridad',DB::raw('COUNT(id) as tot'))->whereRaw('MONTH(created_at) = MONTH(now())')->whereRaw('YEAR(created_at) = YEAR(now())')->groupBy('prioridad')->get();
- $prioriadg=[];
- foreach($prioridad as $prioridad){
-    $prioriadg[]=[$prioridad->prioridad, floatval($prioridad->tot)];
+   
+   
+       //Consulta para medir el tiempo de solicitud de ordenador
+       $tiemordenador = DB::table('soportes')
+           ->select(DB::raw('sum(t_incidencia) as tot2'),DB::raw('SUM(TIMESTAMPDIFF(MINUTE,fecha_inicial,fecha_final)) AS tiempo'))
+           ->where('estatus','FINALIZADO') 
+           ->where('t_incidencia', ['Solicitud de equipo de computo nuevo','Solicitud de ordenador']) 
+           ->whereBetween(DB::raw('DATE(created_at)'), [$request->de, $request->hasta])
+           ->first();   
+   
+       $tiempoord = $this->convertirTiempo($tiemordenador->tiempo);
+       $tiemposop = $this->convertirTiempo($incidencias3->tiempo2);
+   
+    
+       
+       $datos=[];
+       $pend=[];
+       $atr=[];
+       $inc=[];
+       $det=[];
+   
+       foreach($incidencias as $incidencias){
+           $inc[]=[$incidencias->t_incidencia, floatval($incidencias->tot)];
        }
+   
+       foreach($Detalleincidencias as $Detalleincidencia){
+           $det[]=[$Detalleincidencia->t_incidencia, floatval($Detalleincidencia->tot)];
+       }    
+                  
+       $users = DB::table('soportes')->select( 'asignado',DB::raw('COUNT(asignado) as tot'))->where('estatus','FINALIZADO')->whereBetween(DB::raw('DATE(created_at)'), [$request->de, $request->hasta])->groupBy('asignado')->get();
+           
+       $datos=[];
+                     
+       foreach($users as $users){
+           $datos[]=[$users->asignado, floatval($users->tot)];
+       }
+   
+         return view('ti.IncidenciasGraficas',["datos" => json_encode($datos),"datosp" => json_encode($pend),"datosa" => json_encode($atr),"datosi" => json_encode($inc),"datosd" => json_encode($det),"prioridad" => json_encode($prioriadg),"datosH" => json_encode($datosH)],compact('tiemordenador','incidencias3','total','terminadas','proceso','prioridad','tiemincidencias', 'tiempoord', 'tiemposop'));
+      
+   }
+ 
+   
+   public function Incidencias()
+   {
+       $total=DB::table('soportes')->select(DB::raw('COUNT(id) as total'))->whereRaw('MONTH(created_at) = MONTH(now())')->whereRaw('YEAR(created_at) = YEAR(now())')->where('estatus','!=','CANCELADO')->first();
+       $terminadas=DB::table('soportes')->select(DB::raw('COUNT(id) as total'))->whereRaw('MONTH(created_at) = MONTH(now())')->whereRaw('YEAR(created_at) = YEAR(now())')->where('estatus','=','FINALIZADO')->first();
+       $proceso=DB::table('soportes')->select(DB::raw('COUNT(id) as total'))->whereRaw('MONTH(created_at) = MONTH(now())')->whereRaw('YEAR(created_at) = YEAR(now())')->where('estatus','!=','FINALIZADO')->where('estatus','!=','CANCELADO')->first();
+       $prioridad = DB::table('soportes')->select( 'prioridad',DB::raw('COUNT(id) as tot'))->whereRaw('MONTH(created_at) = MONTH(now())')->whereRaw('YEAR(created_at) = YEAR(now())')->where('estatus','!=','CANCELADO')->groupBy('prioridad')->get();
+       $prioriadg=[];
+       foreach($prioridad as $prioridad){
+           $prioriadg[]=[$prioridad->prioridad, floatval($prioridad->tot)];
+           }
        $comparacion=DB::select("SELECT
-       SUM(CASE WHEN MONTH(soportes.created_at) = 1 THEN 1 ELSE 0 END) AS Ene,
-       SUM(CASE WHEN MONTH(soportes.created_at) = 2 THEN 1 ELSE 0 END) AS Feb,
-       SUM(CASE WHEN MONTH(soportes.created_at) = 3 THEN 1 ELSE 0 END) AS Mar,
-       SUM(CASE WHEN MONTH(soportes.created_at) = 4 THEN 1 ELSE 0 END) AS Abr,
-       SUM(CASE WHEN MONTH(soportes.created_at) = 5 THEN 1 ELSE 0 END) AS May,
-       SUM(CASE WHEN MONTH(soportes.created_at) = 6 THEN 1 ELSE 0 END) AS Jun,
-       SUM(CASE WHEN MONTH(soportes.created_at) = 7 THEN 1 ELSE 0 END) AS Jul,
-       SUM(CASE WHEN MONTH(soportes.created_at) = 8 THEN 1 ELSE 0 END) AS Ago,
-       SUM(CASE WHEN MONTH(soportes.created_at) = 9 THEN 1 ELSE 0 END) AS Sep, 
-       SUM(CASE WHEN MONTH(soportes.created_at) = 10 THEN 1 ELSE 0 END) AS Oct,
-       SUM(CASE WHEN MONTH(soportes.created_at) = 11 THEN 1 ELSE 0 END) AS Nov,
-       SUM(CASE WHEN MONTH(soportes.created_at) = 12 THEN 1 ELSE 0 END) AS Dic
-       FROM soportes 
-       WHERE  year(soportes.created_at)= YEAR(now()) and estatus!='CANCELADO' ");
+           SUM(CASE WHEN MONTH(soportes.created_at) = 1 THEN 1 ELSE 0 END) AS Ene,
+           SUM(CASE WHEN MONTH(soportes.created_at) = 2 THEN 1 ELSE 0 END) AS Feb,
+           SUM(CASE WHEN MONTH(soportes.created_at) = 3 THEN 1 ELSE 0 END) AS Mar,
+           SUM(CASE WHEN MONTH(soportes.created_at) = 4 THEN 1 ELSE 0 END) AS Abr,
+           SUM(CASE WHEN MONTH(soportes.created_at) = 5 THEN 1 ELSE 0 END) AS May,
+           SUM(CASE WHEN MONTH(soportes.created_at) = 6 THEN 1 ELSE 0 END) AS Jun,
+           SUM(CASE WHEN MONTH(soportes.created_at) = 7 THEN 1 ELSE 0 END) AS Jul,
+           SUM(CASE WHEN MONTH(soportes.created_at) = 8 THEN 1 ELSE 0 END) AS Ago,
+           SUM(CASE WHEN MONTH(soportes.created_at) = 9 THEN 1 ELSE 0 END) AS Sep, 
+           SUM(CASE WHEN MONTH(soportes.created_at) = 10 THEN 1 ELSE 0 END) AS Oct,
+           SUM(CASE WHEN MONTH(soportes.created_at) = 11 THEN 1 ELSE 0 END) AS Nov,
+           SUM(CASE WHEN MONTH(soportes.created_at) = 12 THEN 1 ELSE 0 END) AS Dic
+           FROM soportes 
+           WHERE  year(soportes.created_at)= YEAR(now()) and estatus!='CANCELADO' "
+       );
+       
        $datosH=[];
+   
        foreach($comparacion as $comparacion){
            $datosH[] = [
                'name'=> "Mes",
-                     'data'=> [floatval($comparacion->Ene),floatval($comparacion->Feb),floatval($comparacion->Mar),floatval($comparacion->Abr),floatval($comparacion->May),floatval($comparacion->Jun),floatval($comparacion->Jul),floatval($comparacion->Ago),floatval($comparacion->Sep),floatval($comparacion->Oct),floatval($comparacion->Nov),floatval($comparacion->Dic)],
-                    ];
-   }
-   $incidencias = DB::table('soportes')->select( 't_incidencia',DB::raw('COUNT(t_incidencia) as tot'))->whereRaw('MONTH(created_at) = MONTH(now())')->whereRaw('YEAR(created_at) = YEAR(now())')->groupBy('t_incidencia')->get();
- //////////////////////////////////////////////////////////////////// 
- $incidencias3 = DB::table('soportes')->select(DB::raw('sum(t_incidencia) as tot2'),DB::raw('SUM(TIMESTAMPDIFF(MINUTE,fecha_final,fecha_inicial)) AS tiempo2'))->where('estatus','FINALIZADO')->whereRaw('MONTH(created_at) = MONTH(now())')->whereRaw('YEAR(created_at) = YEAR(now())')->first();
-
-   $datos=[];
-   $pend=[];
-   $atr=[];
-   $inc=[];
- 
-           foreach($incidencias as $incidencias){
-            $inc[]=[$incidencias->t_incidencia, floatval($incidencias->tot)];
-               }
-               $users = DB::table('soportes')->select( 'asignado',DB::raw('COUNT(asignado) as tot'))->where('estatus','FINALIZADO')->whereRaw('MONTH(created_at) = MONTH(now())')->whereRaw('YEAR(created_at) = YEAR(now())')->groupBy('asignado')->get();
- $datos=[];
- foreach($users as $users){
-    $datos[]=[$users->asignado, floatval($users->tot)];
+               'data'=> [floatval($comparacion->Ene),floatval($comparacion->Feb),floatval($comparacion->Mar),floatval($comparacion->Abr),floatval($comparacion->May),floatval($comparacion->Jun),floatval($comparacion->Jul),floatval($comparacion->Ago),floatval($comparacion->Sep),floatval($comparacion->Oct),floatval($comparacion->Nov),floatval($comparacion->Dic)],
+           ];
        }
-   return view('ti.IncidenciasGraficas',["datos" => json_encode($datos),"datosp" => json_encode($pend),"datosa" => json_encode($atr),"datosi" => json_encode($inc),"prioridad" => json_encode($prioriadg),"datosH" => json_encode($datosH)],compact('incidencias3','total','terminadas','proceso','prioridad'));
-}
+   
+       $incidencias = DB::table('soportes')->select( 't_incidencia',DB::raw('COUNT(t_incidencia) as tot'))->where('estatus','!=','CANCELADO')->whereRaw('MONTH(created_at) = MONTH(now())')->whereRaw('YEAR(created_at) = YEAR(now())')->groupBy('t_incidencia')->get();
+       //consulta para la grafica de detalles por tiempo de soporte.
+       $Detalleincidencias = DB::table('soportes')
+       ->select( 't_incidencia',DB::raw('COUNT(t_incidencia) as tot'))
+       ->whereRaw('MONTH(created_at) = MONTH(now())')
+       ->whereRaw('YEAR(created_at) = YEAR(now())')
+       ->whereNotIn('t_incidencia', ['Desarrollos internos', 'Solicitud de ordenador'])
+       ->whereNotIn('estatus', ['PENDIENTE'])
+       ->groupBy('t_incidencia')
+       ->get();
+
+   
+       //////////////////////////////////////////////////////////////////// 
+       $incidencias3 = DB::table('soportes')->select(DB::raw('sum(t_incidencia) as tot2'),DB::raw('SUM(TIMESTAMPDIFF(MINUTE,fecha_inicial,fecha_final)) AS tiempo2'))->where('estatus','FINALIZADO') ->whereNotIn('t_incidencia', ['Solicitud de equipo de computo nuevo','Solicitud de ordenador'])->whereRaw('MONTH(created_at) = MONTH(now())')->whereRaw('YEAR(created_at) = YEAR(now())')->first();
+       //Consulta para medir tiempo por categoria de tiempo reportada para el datatable de detalles.
+       $tiemincidencias = DB::table('soportes')
+           ->select('t_incidencia',DB::raw('SUM(TIMESTAMPDIFF(MINUTE,fecha_inicial,fecha_final)) AS tiempo3'),DB::raw('SUM(TIMESTAMPDIFF(MINUTE, fecha_inicial, fecha_final)) / COUNT(t_incidencia) AS promedioinc'))
+           ->where('estatus','FINALIZADO')
+           ->whereRaw('MONTH(created_at) = MONTH(now())')
+           ->whereNotIn('t_incidencia', ['Desarrollos internos', 'Solicitud de ordenador']) 
+           ->whereRaw('YEAR(created_at) = YEAR(now())')
+           ->groupBy('t_incidencia')
+           ->get();
+   
+       //Consulta para medir el tiempo de solicitud de ordenador
+   
+       $tiemordenador = DB::table('soportes')
+           ->select(DB::raw('sum(t_incidencia) as tot2'),DB::raw('SUM(TIMESTAMPDIFF(MINUTE,fecha_inicial,fecha_final)) AS tiempo'))
+           ->where('estatus','FINALIZADO') 
+           ->where('t_incidencia', ['Solicitud de equipo de computo nuevo','Solicitud de ordenador']) 
+           ->whereRaw('MONTH(created_at) = MONTH(now())')->whereRaw('YEAR(created_at) = YEAR(now())')
+           ->first();    
+       
+       $tiempoord = $this->convertirTiempo($tiemordenador->tiempo);
+       $tiemposop = $this->convertirTiempo($incidencias3->tiempo2);
+   
+   
+       $datos=[];
+       $pend=[];
+       $atr=[];
+       $inc=[];
+       $det=[];
+   
+       
+       
+       foreach($incidencias as $incidencias){
+           $inc[]=[$incidencias->t_incidencia, floatval($incidencias->tot)];
+       }
+       
+       foreach($Detalleincidencias as $Detalleincidencia){
+           $det[]=[$Detalleincidencia->t_incidencia, floatval($Detalleincidencia->tot)];
+       } 
+   
+       $users = DB::table('soportes')->select( 'asignado',DB::raw('COUNT(asignado) as tot'))->where('estatus','FINALIZADO')->whereRaw('MONTH(fecha_final) = MONTH(now())')->whereRaw('YEAR(fecha_final) = YEAR(now())')->groupBy('asignado')->get();
+       $datos=[];
+   
+       foreach($users as $users){
+           $datos[]=[$users->asignado, floatval($users->tot)];
+       }
+   
+       return view('ti.IncidenciasGraficas',["datos" => json_encode($datos),"datosp" => json_encode($pend),"datosa" => json_encode($atr),"datosi" => json_encode($inc),"datosd" => json_encode($det),"prioridad" => json_encode($prioriadg),"datosH" => json_encode($datosH)],compact('tiemordenador','incidencias3','total','terminadas','proceso','prioridad','tiemincidencias','tiempoord','tiemposop'));
+   }
+   
+   public function convertirTiempo($minutos)
+   {
+       $horas = floor($minutos / 60); 
+       $minutosRestantes = $minutos % 60;
+   
+       return sprintf("%02d:%02d", $horas, $minutosRestantes);
+       
+   }
 public function HistorialGeneral ()
 {
     $risc_conexion = DB::connection('mysql2');
