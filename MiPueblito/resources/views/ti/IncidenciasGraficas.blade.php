@@ -51,7 +51,7 @@ font-family: 'Poppins', sans-serif;
    
    <div class="card   " >
     <div class="card-header">
-     Consultar incidencias
+     <h1>Consultar incidencias</h1>
     </div>
     <div class="card-body">
         <form class="bg-white p-4 rounded" method="POST"  action="{{route('IncidenciasFiltro')}}" >
