@@ -71,3 +71,7 @@ Route::get('/CalendarioMttosTI',[HomeController::class, 'CalendarioMttosTI'])->n
 Route::get( '/cmindex',[CalendarioTiController::class, 'cmindex'])->name('cmindex');
 Route::post( '/cmistore',[CalendarioTiController::class, 'cmistore'])->name('cmistore');
 Route::get('/BuscarEquipo/{id}',[HomeController::class, 'BuscarEquipo'])->name('BuscarEquipo');
+// ******************************Calendario*****************************
+Route::get('/Calendario',[HomeController::class, 'Calendario'])->name('Calendario');
+Route::get( '/index',[EventController::class, 'index'])->name('event.get');
+Route::post( '/store',[EventController::class, 'store'])->name('event.store');

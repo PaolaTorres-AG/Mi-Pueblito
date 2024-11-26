@@ -16,7 +16,6 @@
           display: table-header-group !important;
       }
       </style>
-        <p style="font-weight: bold;color:#f2ca28; text-align: right;">¡BIENVENIDO {{Auth::user()->name}} {{Auth::user()->lastname}} !</p>
 
 <div class="flash-message">
   @foreach (['danger', 'warning', 'success', 'info'] as $msg)
@@ -47,25 +46,29 @@
 
   <div class="col-sm-12 col-md-6 col-lg-6 mb-4">
     <label for="exampleInputEmail1" class="form-label">Tipo de incidencia</label>
-    <select class="form-select " required id="incidencia" name="incidencia"  >
-      <option selected disabled value="">*Tipo de incidencia</option>
-      <option value="Solicitud de equipo de computo nuevo">Solicitud de equipo de computo nuevo</option>
-    <option value="Reasignación de equipo de computo">Reasignación de equipo de computo</option>
-        <option value="Acceso a internet (Justificado y Autorizado)">Acceso a internet (Justificado y Autorizado)</option>
-     <option value="Acceso a cámaras de vigilancia">Acceso a cámaras de vigilancia</option>
-          <option value="Acceso a multifuncionales (Impresoras)">Acceso a multifuncionales (Impresoras)</option>
-          <option value="Acceso o mantenimiento de telefonía fija">Acceso o mantenimiento de telefonía fija</option>
-            <option value="Soporte en equipo de computo por lentitud o falla">Soporte en equipo de computo por lentitud o falla</option>
-            <option value="Soporte en general (Equipos y redes)">Soporte en general (Equipos y redes)</option>
-             <option value="" class="fw-bold text-black"  disabled>****Acceso a aplicaciones****</option>
-              <option value="Office 365">Office 365</option>
-               <option value="Sharepoint">Sharepoint</option>
-                <option value="Contpaq contabilidad">Contpaq contabilidad</option>
-                 <option value="Contpaq Nominas">Contpaq Nominas</option>
-                  <option value="Contpaq Empresarial">Contpaq Empresarial</option>
-                  <option value="Correo corporativo">Correo corporativo</option>
-                  <option value="Desarrollos internos">Desarrollos internos</option>
-      </select>
+    <select class="form-select " required id="incidencia" name="incidencia">
+        <option selected disabled value="">*Tipo de incidencia</option>
+        <option value="Solicitud de ordenador">Solicitud de equipo de computo nuevo</option>
+        <option value="Solicitud de accesorio">Solicitud de accesorio tecnologico</option>
+        <option value="Reasignación de equipo">Reasignación de equipo de computo</option>
+        <option value="Acceso a internet">Acceso a internet (Justificado y Autorizado)</option>
+        <option value="Soporte a impresoras">Soporte a impresoras y multifuncionales</option>
+        <option value="Soporte a ordenador">Soporte en equipo de computo por lentitud o falla</option>
+        <option value="Soporte a redes">Soporte en general (Equipos y redes)</option>
+        <option value="Soporte a aplicaciones">Soporte a aplicaciones</option>
+        <option value=""></option>
+        <option value="" class="fw-bold text-black"  disabled>****Acceso a aplicaciones****</option>
+        <option value="Acceso a cámaras ">Cámaras de vigilancia (IVMS)</option>
+        <option value="Office 365">Office 365</option>
+        <option value="Sharepoint">Sharepoint</option>
+        <option value="Contpaq contabilidad">Contpaq contabilidad</option>
+        <option value="Contpaq nominas">Contpaq nominas</option>
+        <option value="Contpaq comercial">Contpaq comercial</option>
+        <option value="Sistema Iglu">Sistema Iglu</option>
+        <option value="Correo corporativo">Correo corporativo</option>
+        <option value="Desarrollos internos">Desarrollos internos</option>
+        
+    </select>
   </div>
 
   <div class="col-sm-12 col-md-6 col-lg-6 mb-4">
@@ -133,16 +136,16 @@
             </tfoot>
             <tbody class="text-gray-600 text-xs font-light ">
                 @foreach ($incidencias as $data)
-                <tr class="border-b border-gray-200 hover:bg-gray-100">
+                    <tr class="border-b border-gray-200 hover:bg-gray-100">
 
-<td class="py-3 px-6 text-center">{{$data->id}}</td>
-<td class="py-3 px-6 text-center">{{$data->estatus}}</td>
-<td class="py-3 px-6 text-left">{{$data->asignado}}</td>
-<td class="py-3 px-6 text-center">{{$data->clasificacion}}</td>
-<td class="py-3 px-6 text-center">{{$data->descripcion}}</td>
-<td class="py-3 px-6 text-center">{{$data->fecha_inicial}}</td>
-<td class="py-3 px-6 text-center">{{$data->fecha_final}}</td>
-               </tr>
+                        <td class="py-3 px-6 text-center">{{$data->id}}</td>
+                        <td class="py-3 px-6 text-center">{{$data->estatus}}</td>
+                        <td class="py-3 px-6 text-left">{{$data->asignado}}</td>
+                        <td class="py-3 px-6 text-center">{{$data->clasificacion}}</td>
+                        <td class="py-3 px-6 text-center">{{$data->descripcion}}</td>
+                        <td class="py-3 px-6 text-center">{{$data->fecha_inicial}}</td>
+                        <td class="py-3 px-6 text-center">{{$data->fecha_final}}</td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>
@@ -245,4 +248,4 @@
 </script>
 
 @stop
-@endcan
+@endcan                 

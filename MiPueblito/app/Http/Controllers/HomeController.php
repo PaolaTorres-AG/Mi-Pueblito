@@ -271,7 +271,6 @@ $registrot->descripcion = $request->descripcion;
 $registrot->email = auth()->user()->email;
 $registrot->user_id = auth()->user()->id;
 $registrot->estatus ='PENDIENTE';
-$registrot->asignado ='GUILLERMO LEON';
 $registrot->save();
 
 }else{
@@ -287,7 +286,6 @@ $registrot->t_incidencia = $request->incidencia;
 $registrot->descripcion = $request->descripcion;
 $registrot->email = auth()->user()->email;
 $registrot->estatus ='PENDIENTE';
-$registrot->asignado ='SELENE MARQUEZ';
 $registrot->imagen =$nombre_a_guardar;
 $registrot->user_id = auth()->user()->id;
 $registrot->save();
@@ -348,8 +346,8 @@ try {
     $registrot->proveedor = $request->proveedord;
     $registrot->so = $request->sod;
     $registrot->ip = $request->ipd;
-       $registrot->ip_dhcp = $request->dhcp;
-        $registrot->identificar = $request->identificar;
+    $registrot->ip_dhcp = $request->dhcp;
+    $registrot->identificar = $request->identificar;
     $registrot->correo_disp = $request->correod;
     $registrot->programas_instalados = $request->str2;
     $registrot->v_office = $request->voffice;
@@ -648,7 +646,7 @@ public function IncidenciasAsignacion()
     $incidencias = DB::table('soportes')->WhereNull('asignado')->Where('estatus','!=','CANCELADO')->get();
     $incidenciasasignadas = DB::table('soportes')->where('asignado','!=','')->where('estatus','!=','FINALIZADO')->Where('estatus','!=','CANCELADO') ->get();
 
-    $users = User::Permission('TI')->get();
+    $users = User::Permission('TI')->where('active','=','ACTIVO')->get();
     return view('ti.Incidencias',compact('incidencias','users','incidenciasasignadas'));
 }
 
@@ -658,10 +656,11 @@ public function Asignar(Request $request){
     ]);
 DB::beginTransaction();
 try {
+    $fechaAsignacion = Carbon::now();
 DB::table('soportes')
 ->where('id', $request->idt)  // find your user by their email
 ->limit(1)  // optional - to ensure only one record is updated.
-->update(array('asignado' => strtoupper($request->user),'estatus' => 'PENDIENTE'));  // update the record in the DB
+->update(array('asignado' => strtoupper($request->user),'estatus' => 'PENDIENTE','fecha_inicial' => $fechaAsignacion));  // update the record in the DB
 
 
 DB::commit(); 
@@ -681,17 +680,24 @@ return redirect()->back()->withDanger('FALLA EN LA ASIGNACION');
 public function CompletarSoporte(Request $request)
 {
     $request->validate([
-        'obs'=>'required', 'folio'=>'required', 'clasificacion'=>'required'
+        'obs'=>'required', 'folio'=>'required', 'clasificacion'=>'required','tiempo_a_agregar' => 'required'
     ]);
 DB::beginTransaction();
 try {
 
-    $hasta = substr($request->datetimes, -16); 
-    $de = substr($request->datetimes, 0,-20); 
+    /*$hasta = substr($request->datetimes, -16); 
+    $de = substr($request->datetimes, 0,-20); */
+    $soporte = soportes::find($request->folio);
+    $tiempoAgregar = $request->input('tiempo_a_agregar');
+    $fechainicial = Carbon::parse($soporte->fecha_inicial);
+    $fechafinal = $fechainicial->addMinutes($tiempoAgregar);
+
+
+
 DB::table('soportes')
 ->where('id', $request->folio)  // find your user by their email
 ->limit(1)  // optional - to ensure only one record is updated.
-->update(array('estatus' => strtoupper('FINALIZADO'),'clasificacion'=>$request->clasificacion, 'observaciones' => $request->obs, 'fecha_final' => $de,'fecha_inicial' => $hasta));  // update the record in the DB
+->update(array('estatus' => strtoupper('FINALIZADO'),'clasificacion'=>$request->clasificacion, 'observaciones' => $request->obs,'fecha_final' => $fechafinal));  // update the record in the DB
 
 
 DB::commit(); 
@@ -777,18 +783,18 @@ return redirect()->back()->withDanger('FALLA EN LA ACTUALIZACION'.$e.' ');
            ->select( 't_incidencia',DB::raw('COUNT(t_incidencia) as tot'))
            ->where('estatus','FINALIZADO')
            ->whereBetween(DB::raw('DATE(created_at)'), [$request->de, $request->hasta])
-           ->whereNotIn('t_incidencia', [ 'Solicitud de equipo de computo nuevo','Solicitud de ordenador'])
+           ->whereNotIn('t_incidencia', ['Solicitud de equipo de computo nuevo','Solicitud de ordenador', 'SOLICITAR EQUIPO NUEVO'])
            ->groupBy('t_incidencia')
            ->get();
    
        //////////////////////////////////////////////////////////////////// 
-       $incidencias3 = DB::table('soportes')->select(DB::raw('sum(t_incidencia) as tot2'),DB::raw('sum(TIMESTAMPDIFF(MINUTE,fecha_inicial,fecha_final)) AS tiempo2'))->where('estatus','=','FINALIZADO')->whereNotIn('t_incidencia', ['Solicitud de equipo de computo nuevo','Solicitud de ordenador'])->whereBetween(DB::raw('DATE(created_at)'), [$request->de, $request->hasta])->first();
+       $incidencias3 = DB::table('soportes')->select(DB::raw('sum(t_incidencia) as tot2'),DB::raw('sum(TIMESTAMPDIFF(MINUTE,fecha_inicial,fecha_final)) AS tiempo2'))->where('estatus','=','FINALIZADO')->whereNotIn('t_incidencia', ['Solicitud de equipo de computo nuevo','Solicitud de ordenador','SOLICITAR EQUIPO NUEVO'])->whereBetween(DB::raw('DATE(created_at)'), [$request->de, $request->hasta])->first();
         //Consulta para medir tiempo por categoria de tiempo reportada para el datatable de detalles.
        $tiemincidencias = DB::table('soportes')
            ->select('t_incidencia',DB::raw('SUM(TIMESTAMPDIFF(MINUTE,fecha_inicial,fecha_final)) AS tiempo3 ') ,DB::raw('COUNT(t_incidencia) as tot'),DB::raw('SUM(TIMESTAMPDIFF(MINUTE, fecha_inicial, fecha_final)) / COUNT(t_incidencia) AS promedioinc'))
            ->where('estatus','FINALIZADO')
            ->whereBetween(DB::raw('DATE(created_at)'), [$request->de, $request->hasta])
-           ->whereNotIn('t_incidencia', ['Solicitud de equipo de computo nuevo','Solicitud de ordenador']) 
+           ->whereNotIn('t_incidencia', ['Solicitud de equipo de computo nuevo','Solicitud de ordenador', 'SOLICITAR EQUIPO NUEVO']) 
            ->groupBy('t_incidencia')
            ->get();
    
@@ -798,7 +804,7 @@ return redirect()->back()->withDanger('FALLA EN LA ACTUALIZACION'.$e.' ');
        $tiemordenador = DB::table('soportes')
            ->select(DB::raw('sum(t_incidencia) as tot2'),DB::raw('SUM(TIMESTAMPDIFF(MINUTE,fecha_inicial,fecha_final)) AS tiempo'))
            ->where('estatus','FINALIZADO') 
-           ->where('t_incidencia', ['Solicitud de equipo de computo nuevo','Solicitud de ordenador']) 
+           ->where('t_incidencia', ['Solicitud de equipo de computo nuevo','Solicitud de ordenador', 'SOLICITAR EQUIPO NUEVO']) 
            ->whereBetween(DB::raw('DATE(created_at)'), [$request->de, $request->hasta])
            ->first();   
    
@@ -876,20 +882,20 @@ return redirect()->back()->withDanger('FALLA EN LA ACTUALIZACION'.$e.' ');
        ->select( 't_incidencia',DB::raw('COUNT(t_incidencia) as tot'))
        ->whereRaw('MONTH(created_at) = MONTH(now())')
        ->whereRaw('YEAR(created_at) = YEAR(now())')
-       ->whereNotIn('t_incidencia', ['Desarrollos internos', 'Solicitud de ordenador'])
+       ->whereNotIn('t_incidencia', ['Desarrollos internos', 'Solicitud de ordenador', 'Solicitud de equipo de computo nuevo','SOLICITAR EQUIPO NUEVO'])
        ->whereNotIn('estatus', ['PENDIENTE'])
        ->groupBy('t_incidencia')
        ->get();
 
    
        //////////////////////////////////////////////////////////////////// 
-       $incidencias3 = DB::table('soportes')->select(DB::raw('sum(t_incidencia) as tot2'),DB::raw('SUM(TIMESTAMPDIFF(MINUTE,fecha_inicial,fecha_final)) AS tiempo2'))->where('estatus','FINALIZADO') ->whereNotIn('t_incidencia', ['Solicitud de equipo de computo nuevo','Solicitud de ordenador'])->whereRaw('MONTH(created_at) = MONTH(now())')->whereRaw('YEAR(created_at) = YEAR(now())')->first();
+       $incidencias3 = DB::table('soportes')->select(DB::raw('sum(t_incidencia) as tot2'),DB::raw('SUM(TIMESTAMPDIFF(MINUTE,fecha_inicial,fecha_final)) AS tiempo2'))->where('estatus','FINALIZADO') ->whereNotIn('t_incidencia', ['Solicitud de equipo de computo nuevo','Solicitud de ordenador', 'SOLICITAR EQUIPO NUEVO'])->whereRaw('MONTH(created_at) = MONTH(now())')->whereRaw('YEAR(created_at) = YEAR(now())')->first();
        //Consulta para medir tiempo por categoria de tiempo reportada para el datatable de detalles.
        $tiemincidencias = DB::table('soportes')
            ->select('t_incidencia',DB::raw('SUM(TIMESTAMPDIFF(MINUTE,fecha_inicial,fecha_final)) AS tiempo3'),DB::raw('SUM(TIMESTAMPDIFF(MINUTE, fecha_inicial, fecha_final)) / COUNT(t_incidencia) AS promedioinc'))
            ->where('estatus','FINALIZADO')
            ->whereRaw('MONTH(created_at) = MONTH(now())')
-           ->whereNotIn('t_incidencia', ['Desarrollos internos', 'Solicitud de ordenador']) 
+           ->whereNotIn('t_incidencia', ['Desarrollos internos', 'Solicitud de ordenador','Solicitud de equipo de computo nuevo',  'SOLICITAR EQUIPO NUEVO']) 
            ->whereRaw('YEAR(created_at) = YEAR(now())')
            ->groupBy('t_incidencia')
            ->get();
@@ -899,7 +905,7 @@ return redirect()->back()->withDanger('FALLA EN LA ACTUALIZACION'.$e.' ');
        $tiemordenador = DB::table('soportes')
            ->select(DB::raw('sum(t_incidencia) as tot2'),DB::raw('SUM(TIMESTAMPDIFF(MINUTE,fecha_inicial,fecha_final)) AS tiempo'))
            ->where('estatus','FINALIZADO') 
-           ->where('t_incidencia', ['Solicitud de equipo de computo nuevo','Solicitud de ordenador']) 
+           ->where('t_incidencia', ['Solicitud de equipo de computo nuevo','Solicitud de ordenador', 'SOLICITAR EQUIPO NUEVO']) 
            ->whereRaw('MONTH(created_at) = MONTH(now())')->whereRaw('YEAR(created_at) = YEAR(now())')
            ->first();    
        
@@ -1074,11 +1080,15 @@ return $pdf->stream('Pase-de-Salida.pdf');
     
      return view('ti.CalendarioMttos',compact('usuarios')); 
     }
-public function BuscarEquipo($id)
+    public function BuscarEquipo($id)
     {
- $productos= DB::table('equipos')->where('colaborador_id',$id)->where('activo','ACTIVO')->get();
-return response()->json($productos);
-       }
-
+        $productos= DB::table('equipos')->where('colaborador_id',$id)->where('activo','ACTIVO')->get();
+        return response()->json($productos);
+    }
+    public function Calendario()
+    {
+    return view('ti.calendario'); 
+    }
 }
+
 

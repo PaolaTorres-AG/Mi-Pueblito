@@ -22,7 +22,6 @@
             display: table-header-group !important;
         }
         </style>
-        <p style="font-weight: bold;color:#f2ca28; text-align: right;">¡BIENVENIDO {{Auth::user()->name}} {{Auth::user()->lastname}} !</p>
 
    <!--Incidencias por Asignar-->
 @stop
@@ -35,117 +34,114 @@
     @endif
   @endforeach
 </div> 
+    <p class="m-2">INCIDENCIAS POR ASIGNAR</p>
+    <div class="table-responsive bg-white p-4 rounded" id="mydatatable-container">
+        <table class="records_list table table-striped text-sm table-bordered table-hover" id="mydatatable">
+            <thead>
+                <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                    <th class="">FOLIO</th>
+                    <th class="">USUARIO</th>
+                    <th class="">PRIORIDAD</th>
+                    <th class="">INCIDENCIA</th>
+                    <th class="">DESCRIPCION</th>
+                    <th class="">DEPARTAMENTO</th>
+                    <th class="">IMAGEN</th>
+                    <th class="">FECHA</th>
+                    <th class="">ASIGNAR</th>
+            </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>Filter..</th>
+                    <th>Filter..</th>
+                    <th>Filter..</th>
+                    <th>Filter..</th>
+                    <th>Filter..</th>
+                    <th>Filter..</th>
+                    <th>Filter..</th>
+                    <th>Filter..</th>
+                    <th>Filter..</th>
+            
+                </tr>
+            </tfoot>
+            <tbody class="text-gray-600 text-sm font-light">
+                @foreach ($incidencias as $incidencias)
+                <tr class="border-b border-gray-200 hover:bg-gray-100">
 
-          <!--  <div class="table-responsive bg-white p-4 rounded" id="mydatatable-container">-->
-          <!--      <table class="records_list table table-striped text-sm table-bordered table-hover" id="mydatatable">-->
-          <!--          <thead>-->
-          <!--              <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">-->
-          <!--                  <th class="">FOLIO</th>-->
-          <!--                  <th class="">USUARIO</th>-->
-          <!--                  <th class="">PRIORIDAD</th>-->
-          <!--                  <th class="">INCIDENCIA</th>-->
-          <!--                  <th class="">DESCRIPCION</th>--->
-          <!--                   <th class="">DEPARTAMENTO</th>-->
-          <!--                    <th class="">IMAGEN</th>-->
-          <!--                  <th class="">FECHA</th>-->
-          <!--                  <th class="">ASIGNAR</th>-->
-          <!--           </tr>-->
-          <!--          </thead>-->
-          <!--          <tfoot>-->
-          <!--              <tr>-->
-          <!--                  <th>Filter..</th>-->
-          <!--                  <th>Filter..</th>-->
-          <!--                  <th>Filter..</th>-->
-          <!--                  <th>Filter..</th>-->
-          <!--                  <th>Filter..</th>-->
-          <!--                  <th>Filter..</th>-->
-          <!--                  <th>Filter..</th>-->
-          <!--                    <th>Filter..</th>-->
-          <!--                  <th>Filter..</th>-->
-                       
-          <!--              </tr>-->
-          <!--          </tfoot>-->
-          <!--          <tbody class="text-gray-600 text-sm font-light">-->
-          <!--              @foreach ($incidencias as $incidencias)-->
-          <!--              <tr class="border-b border-gray-200 hover:bg-gray-100">-->
+                    <td class="">
+                        <div class="flex items-center">
+                        
+                            <span class="font-light">{{$incidencias->id}}</span>
+                        </div>
+                    </td>
 
-          <!--                  <td class="">-->
-          <!--                      <div class="flex items-center">-->
-                                  
-          <!--                          <span class="font-light">{{$incidencias->id}}</span>-->
-          <!--                      </div>-->
-          <!--                  </td>-->
+                    <td class="">
+                        <div class="flex items-center">
+                        
+                            <span class="font-light">{{$incidencias->username}}</span>
+                        </div>
+                    </td>
+                    @if ($incidencias->prioridad =="ALTO")
+                    <td class="text-center">
+                        <span class="rounded bg-red-400 py-1 px-3 text-xs font-bold">{{$incidencias->prioridad}}</span>
+                    </td>
+                        @endif
+                        @if ($incidencias->prioridad =="MEDIO")
+                        <td class="text-center">
+                                <span class="rounded bg-yellow-400 py-1 px-3 text-xs font-bold">{{$incidencias->prioridad}}</span>
+                        </td>
+                            @endif
+                            @if ($incidencias->prioridad =="BAJO")
+                            <td class="text-center">
+                                <span class="rounded bg-blue-400 py-1 px-3 text-xs font-bold">{{$incidencias->prioridad}}</span>
+                            </td>
+                                @endif
 
-          <!--                  <td class="">-->
-          <!--                      <div class="flex items-center">-->
-                                  
-          <!--                          <span class="font-light">{{$incidencias->username}}</span>-->
-          <!--                      </div>-->
-          <!--                  </td>-->
-          <!--                  @if ($incidencias->prioridad =="ALTO")-->
-          <!--                  <td class="text-center">-->
-          <!--  <span class="rounded bg-red-400 py-1 px-3 text-xs font-bold">{{$incidencias->prioridad}}</span>-->
-          <!--                  </td>-->
-          <!--                      @endif-->
-          <!--                      @if ($incidencias->prioridad =="MEDIO")-->
-          <!--                      <td class="text-center">-->
-          <!--                              <span class="rounded bg-yellow-400 py-1 px-3 text-xs font-bold">{{$incidencias->prioridad}}</span>-->
-          <!--                      </td>-->
-          <!--                          @endif-->
-          <!--                          @if ($incidencias->prioridad =="BAJO")-->
-          <!--                          <td class="text-center">-->
-          <!--<span class="rounded bg-blue-400 py-1 px-3 text-xs font-bold">{{$incidencias->prioridad}}</span>-->
-          <!--                          </td>-->
-          <!--                              @endif-->
-
-          <!--                  <td class="">-->
-          <!--                      <div class="flex items-center">-->
-                                  
-          <!--                          <span class="font-light">{{$incidencias->t_incidencia}}</span>-->
-          <!--                      </div>-->
-          <!--                  </td>-->
-          <!--                  <td class=" text-left">-->
-          <!--                      <div class="flex items-center">-->
-                                  
-          <!--                          <span class="font-light">{{$incidencias->descripcion}}</span>-->
-          <!--                      </div>-->
-          <!--                  </td>-->
-          <!--                  <td class=" text-left">-->
-          <!--                      <div class="flex items-center">-->
-                                  
-          <!--                          <span class="font-light">{{$incidencias->dto}}</span>-->
-          <!--                      </div>-->
-          <!--                  </td>-->
-          <!--                  <td class=" text-left">-->
-          <!--                      <div class="flex items-center">-->
-          <!--                          @if ($incidencias->imagen =="" || $incidencias->imagen==NULL)-->
-          <!--                          <span class="font-light"><p>Sin evidencia</p></span> -->
-          <!--                          @else-->
-          <!--                          <span class="font-light"><button type="button" onclick="window.open('{{route('ImgIncidencia',$incidencias->id)}}', '_blank')"   ><p style="color: rgb(7, 101, 251);">Imagen</p></button></span>-->
-          <!--                          @endif-->
-                                 
-          <!--                      </div>-->
-          <!--                  </td>-->
-          <!--                  <td class="">-->
-          <!--                      <div class="flex items-center">-->
-                                  
-          <!--                          <span class="font-light">{{$incidencias->created_at}}</span>-->
-          <!--                      </div>-->
-          <!--                  </td>-->
-          <!--                  <td class="">-->
-          <!--                        <a class="btn btn-light" href="" name="idsele" data-toggle="modal" data-target="#exampleModal" role="tab">-->
-          <!--                          <i class="fa fa-cogs"></i>-->
-          <!--                        </a>-->
-          <!--                  </td>-->
-
-                           
-          <!--              </tr>-->
-          <!--              @endforeach-->
-          <!--          </tbody>-->
-          <!--      </table>-->
-          <!--  </div>-->
+                    <td class="">
+                        <div class="flex items-center">
+                            <span class="font-light">{{$incidencias->t_incidencia}}</span>
+                        </div>
+                    </td>
+                    <td class=" text-left">
+                        <div class="flex items-center">
+                        
+                            <span class="font-light">{{$incidencias->descripcion}}</span>
+                        </div>
+                    </td>
+                    <td class=" text-left">
+                        <div class="flex items-center">
+                        
+                            <span class="font-light">{{$incidencias->dto}}</span>
+                        </div>
+                    </td>
+                    <td class=" text-left">
+                        <div class="flex items-center">
+                            @if ($incidencias->imagen =="" || $incidencias->imagen==NULL)
+                            <span class="font-light"><p>Sin evidencia</p></span> 
+                            @else
+                            <span class="font-light"><button type="button" onclick="window.open('{{route('ImgIncidencia',$incidencias->id)}}', '_blank')"   ><p style="color: rgb(7, 101, 251);">Imagen</p></button></span>
+                            @endif
+                        
+                        </div>
+                    </td>
+                    <td class="">
+                        <div class="flex items-center">
+                        
+                            <span class="font-light">{{$incidencias->created_at}}</span>
+                        </div>
+                    </td>
+                    <td class="">
+                        <a class="btn btn-light" href="" name="idsele" data-toggle="modal" data-target="#exampleModal" role="tab">
+                          <i class="fa fa-cogs"></i>
+                        </a>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
          {{--tabla incidencias asiganadas  --}}
-         <p class="m-2">Incidencias Asignadas</p>
+         <p class="m-2">INCIDENCIAS ASIGNADAS</p>
          <div class="table-responsive bg-white p-4 rounded" id="mydatatable2-container">
             <table class="records_list table table-striped table-bordered table-hover" id="mydatatable2">
                 <thead>
@@ -261,7 +257,7 @@
                 </tbody>
             </table>
         </div>
-      {{-- modal para asignar --}}
+         {{-- modal para asignar --}}
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -282,7 +278,7 @@
                     <select class="form-select js-example-basic-multiple" name="user" id="user"  required>
                       <option selected disabled>Selecciona el usuario</option>
                       @foreach ($users as $user)
-              <option  value="{{$user->name}}"> {{strtoupper($user->name)}}</option>
+              <option  value="{{$user->name}}"> {{strtoupper($user->name)}} {{strtoupper($user->lastname)}}</option>
               @endforeach
                     </select>
                 </div>
@@ -314,15 +310,16 @@
                   </div>
                   <div class="col-sm-12 col-md-12 col-lg-12 mb-3">
                     <label for="exampleInputEmail1" class="form-label">CLASIFICACION</label>
-                    <select class="form-select js-example-basic-multiple" name="clasificacion" id="clasificacion"  required>
-                      <option selected disabled>Selecciona una opcion</option>
-              <option  value="Equipo nuevo o reasignación">Equipo nuevo o reasignación</option>
-              <option  value="Soporte general de equipos">Soporte general de equipos</option>
-              <option  value="Acceso a aplicaciones">Acceso a aplicaciones</option>
-              <option  value="Acceso a internet">Acceso a internet</option>
-               <option  value="Telefonía fija">Telefonía fija</option>
-                <option  value="Cámaras de vigilancia">Cámaras de vigilancia</option>
-             
+                    <select class="form-select js-example-basic-multiple" name="clasificacion" id="clasificacion"  required="true">
+                        <option selected disabled>Selecciona una opcion</option>
+                        <option  value="Equipo nuevo o reasignación">Equipo nuevo o reasignación</option>
+                        <option  value="Soporte general de equipos">Soporte general de equipos</option>
+                        <option  value="Acceso a aplicaciones">Acceso a aplicaciones</option>
+                        <option  value="Soporte a aplicaciones">Soporte a aplicaciones</option>
+                        <option  value="Acceso a impresoras">Acceso a multifuncionales y impresoras</option>
+                        <option  value="Soporte a impresoras">Soporte a multifuncionales y impresoras</option>
+                        <option  value="Acceso a internet">Acceso a internet</option>
+                        <option  value="Cámaras de vigilancia">Cámaras de vigilancia</option>
                     </select>
                 </div>
                 <div class="col-sm-12 col-md-12 col-lg-12 mb-4">
@@ -330,10 +327,31 @@
                     <textarea class="form-control"  id="obs" name="obs" required maxlength="800"></textarea>
                   </div>
                   <!---->
-                   <div class="col-sm-12 col-md-12 col-lg-12 mb-4">
+                   {{-- <div class="col-sm-12 col-md-12 col-lg-12 mb-4">
                     <label for="exampleInputEmail1" class="form-label">FECHA</label>
                     <input type="text" name="datetimes" id="datetimes" class="form-control"  />
-                  </div>
+                  </div> --}}
+                  <div class="col-sm-12 col-md-12 col-lg-12 mb-4">
+                    <label for="exampleInputEmail1" class="form-label">TIEMPO EN QUE SE SOLUCIONO</label>
+                    <select name="tiempo_a_agregar" class="form-select js-example-basic-multiple" name="clasificacion" id="clasificacion"  required="true">
+                        <option selected disabled>Selecciona una opción</option>
+                        <option value="5">5 min</option>
+                        <option value="10">10 min</option>
+                        <option value="20">20 min</option>
+                        <option value="40">40 min</option>
+                        <option value="60">1 hr</option>
+                        <option value="180">3 hr</option>
+                        <option value="300">5 hr</option>
+                        <option value="480">8 hr</option>
+                        <option value="1440">1 día</option>
+                        <option value="2880">2 días</option>
+                        <option value="4320">3 días</option>
+                        <option value="5760">4 días</option>
+                        <option value="7200">1 semana</option>
+                        <option value="14400">2 semanas</option>
+                        <option value="21600">3 semanas</option>
+                    </select>
+                </div>  
                   <!---->
                   <!--<div class="col-sm-12 col-md-12 col-lg-12 mb-4">-->
                   <!--  <label for="exampleInputEmail1" class="form-label">FECHA Y HORA DE COMIENZO</label>-->
