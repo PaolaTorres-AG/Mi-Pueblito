@@ -75,3 +75,10 @@ Route::get('/BuscarEquipo/{id}',[HomeController::class, 'BuscarEquipo'])->name('
 Route::get('/Calendario',[HomeController::class, 'Calendario'])->name('Calendario');
 Route::get( '/index',[EventController::class, 'index'])->name('event.get');
 Route::post( '/store',[EventController::class, 'store'])->name('event.store');
+// ******************************SM Calendario*****************************
+Route::get( '/index2',[EventosController::class, 'index2'])->name('event.getx');
+Route::post( '/storex',[EventosController::class, 'storex'])->name('event.storex');
+Route::get('/CalendarioDoctor',[HomeController::class, 'CalendarioDoctor'])->name('CalendarioDoctor');
+Route::get('ListaPaseSalida',[HomeController::class, 'ListaPaseSalida'])->name('ListaPaseSalida');
+Route::post('Vigilancia',[HomeController::class, 'Vigilancia'])->name('Vigilancia');
+Route::post('ListaPaseSalida',[HomeController::class, 'ListaPaseSalidaP'])->name('ListaPaseSalidaP');

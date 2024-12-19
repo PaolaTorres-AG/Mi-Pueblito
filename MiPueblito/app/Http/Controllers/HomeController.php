@@ -1089,6 +1089,8 @@ return $pdf->stream('Pase-de-Salida.pdf');
     {
     return view('ti.calendario'); 
     }
+    public function CalendarioDoctor(){
+    
+        return view('ti.CalendarioDoctor');
+    }
 }
-
-

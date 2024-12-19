@@ -345,6 +345,14 @@ return [
             'classes'  => 'font-weight-normal text-sm',
             'can'=>'MI-PUEBLITO'
         ],
+        [
+            'text' => 'Consultorio Medico',
+            'url' => 'MiPueblito/CalendarioDoctor',
+            'icon' => 'fa-solid fa-briefcase-medical',
+            'icon_color' => 'gray-200',
+            'classes'  => 'font-weight-normal text-sm',
+            'can' =>'MI-PUEBLITO',
+        ],
         ['header' => 'MODULO SISTEMAS', 'classes'  => 'font-weight-normal text-sm bg-orange opacity-75 text-center' , 'can'=>'TI'],
         ['header' => '****CONTROL DE ACTIVOS****', 'classes'  => 'font-weight-normal text-xs text-yellow text-center' , 'can'=>'TI'],
         [
