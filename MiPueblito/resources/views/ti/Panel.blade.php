@@ -1,4 +1,3 @@
-@can('MI-PUEBLITO')
 @extends('adminlte::page')
 @section('title', 'Mi Pueblito')
 @section('content_header')
@@ -331,4 +330,3 @@
     });
 </script>
 @stop
-@endcan

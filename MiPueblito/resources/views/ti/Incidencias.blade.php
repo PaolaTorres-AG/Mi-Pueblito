@@ -304,8 +304,7 @@
               <form method="POST"  action="{{route('CompletarSoporte')}}">
                 @csrf
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button class="btn btn-danger me-md-2" type="button" id="banear" onclick="baner()"><i class="fa fa-solid fa-ban"></i></button>   
-                </div>
+                    <button class="btn btn-danger me-md-2" type="button" id="banear" onclick="baner()"><i class="fa fa-solid fa-ban"></i></button>   </div>
                 <div class="col-sm-12 col-md-12 col-lg-12 mb-4">
                     <label for="exampleInputEmail1" class="form-label">FOLIO</label>
                     <input type="text" class="form-control" id="folio" name="folio" readonly>

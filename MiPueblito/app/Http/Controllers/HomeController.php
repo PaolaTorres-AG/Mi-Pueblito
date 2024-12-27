@@ -321,6 +321,41 @@ public function CrearAsignacion()
     $dispositivos = DB::table('users')->where('active','ACTIVO')->orderBy('id', 'desc')->get(); 
     return view('ti.CrearAsignacion',compact('users','userspassw','dispositivos'));   
 }
+public function ListaPaseSalida(){
+    $periodo=now()->format('M Y');
+    $interna=DB::table('pase_salidas')->select(DB::raw('COUNT(id) as total'))->whereRaw('MONTH(created_at) = MONTH(now())')->whereRaw('YEAR(created_at) = YEAR(now())')->where('motivo','=','Incapacidad Interna')->first();
+    $enf=DB::table('pase_salidas')->select(DB::raw('COUNT(id) as total'))->whereRaw('MONTH(created_at) = MONTH(now())')->whereRaw('YEAR(created_at) = YEAR(now())')->where('motivo','=','Enfermedad General')->first();
+    $pases=DB::table('pase_salidas')->whereRaw('MONTH(created_at) = MONTH(now())')->whereRaw('YEAR(created_at) = YEAR(now())')->whereNull('horagro')->get();
+        return view('ti.ListaPase',compact('periodo','interna','enf','pases'));
+    }
+    public function Vigilancia(Request $request){
+        DB::beginTransaction();
+        try {
+        DB::table('pase_salidas')
+        ->where('id',$request->idu)
+        ->update(['horagro' => $request->fecha]);   
+    DB::commit();
+    $request->session()->flash('alert-success', 'ACTUALIZACION EXITOSA!');
+    return redirect()->back()->withSuccess('ACTUALIZACION EXITOSA!');
+    } catch (\Exception $e) {
+    DB::rollback();
+    $request->session()->flash('alert-danger', 'NO SE PUDO HACER LA ACTUALIZACION');
+    return redirect()->back()->withDanger('NO SE PUDO HACER LA ACTUALIZACION');
+    } catch (\Throwable $e) {
+    DB::rollback();
+    $request->session()->flash('alert-danger', 'NO SE PUDO HACER LA ACTUALIZACION ');
+    return redirect()->back()->withDanger('NO SE PUDO HACER LA ACTUALIZACION  ');
+    }
+    }
+    
+    public function ListaPaseSalidaP(Request $request){
+        $periodo=$request->de." / ".$request->hasta;
+        $interna=DB::table('pase_salidas')->select(DB::raw('COUNT(id) as total'))->whereBetween(DB::raw('DATE(created_at)'), [$request->de, $request->hasta])->where('motivo','=','Incapacidad Interna')->first();
+        $enf=DB::table('pase_salidas')->select(DB::raw('COUNT(id) as total'))->whereBetween(DB::raw('DATE(created_at)'), [$request->de, $request->hasta])->where('motivo','=','Enfermedad General')->first();
+        $pases=DB::table('pase_salidas')->whereBetween(DB::raw('DATE(created_at)'), [$request->de, $request->hasta])->get();
+            return view('ti.ListaPase',compact('periodo','interna','enf','pases'));
+    }
+    
 public function RegistroEquipo(Request $request)
 {
     $request->validate([
