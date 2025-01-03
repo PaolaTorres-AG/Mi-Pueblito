@@ -8,6 +8,7 @@
 
 font-family: 'Poppins', sans-serif;
 }
+
 h1#demo-title {
     margin: 30px 0px 80px 0px;
     text-align: center;
@@ -32,6 +33,9 @@ table tr {
 
 #calendar .fc-today {
     background: #e0f0f6 !important;
+}
+#calendar .fc-bgevent {
+    background: #000000;
 }
 .fc-day-grid-event .fc-content {
     background: 
@@ -203,12 +207,16 @@ rgba(79, 191, 244, 0.51);
         <div class="modal-body">
          <form id="formadd">
             <div class="mb-3">
-                <label for="disabledTextInput" class="form-label text-sm">Nombre del paciente</label>
-                <input type="text" id="titulo2" name="titulo2" class="form-control form-control-sm " value="{{Auth::user()->name}} {{Auth::user()->lastname}}" onkeyup="desblock()" disabled> 
+                <label for="disabledTextInput" class="form-label text-sm">Nombre del solicitante</label>
+                <input type="text" id="titulo2" name="titulo2" required class="form-control form-control-sm " value="{{Auth::user()->name}} {{Auth::user()->lastname}}" onkeyup="desblock()" disabled> 
               </div>
               <div class="mb-3">
                 <label for="disabledTextInput" class="form-label text-sm">Departamento</label>
                 <input type="text" id="titulo2" name="titulo2" class="form-control form-control-sm " value="{{Auth::user()->dto}}" onkeyup="desblock()" disabled>
+              </div>
+              <div class="mb-3">
+                <label  class="form-label text-sm">Nombre del paciente</label>
+                <input   type="text" id="description" name="description" class="form-control form-control-sm"  onkeyup="desblock()"  required></input>
               </div>
       
             
@@ -216,11 +224,11 @@ rgba(79, 191, 244, 0.51);
                 <div class="row gx-5">
                   <div class="col ">
                     <label for="disabledTextInput" class="form-label text-sm">Hora de la consulta</label>
-                <input  id="finicial2" name="finicial2" class="form-control datepicker form-control-sm" readonly onchange="desblock()">
+                <input  id="finicial2" name="finicial2" class="form-control datepicker form-control-sm" disabled onchange="desblock()">
                   </div>
                   <div class="col" >
                     <label for="disabledTextInput" class="form-label text-sm">Hora final</label>
-                <input  id="ffinal2" name="ffinal2" class="form-control datepicker form-control-sm" readonly onchange="desblock()">
+                <input  id="ffinal2" name="ffinal2" class="form-control datepicker form-control-sm" disabled onchange="desblock()">
                   </div>
                 
                 </div>
@@ -233,7 +241,7 @@ rgba(79, 191, 244, 0.51);
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-primary btn-sm" id="editsubmit" onclick="agregar()" >Aceptar</button>
+          <button type="submit" class="btn btn-primary btn-sm" id="editsubmit"  onclick="agregar()" >Aceptar</button>
         </div>
       </div>
     </div>
@@ -543,17 +551,29 @@ calendar.fullCalendar('refetchEvents');
             eventMouseover: function(event, jsEvent) {
                 if($('#userid').val()==event.user_id)
                 { 
-var tooltip = '<div class="card text-bg-dark mb-3 calendarTooltip" style="padding-left:10px; border-radius: 8px;position:absolute;z-index:10001;"><div class="card-header text-sm text-center">Consulta Medica</div><div class="card-body"><p class="card-title text-xs"><i class="fa  fa-user"></i> Creado por: ' + event.user_name + '</p><p class="card-text text-xs"><i class="fa fa-solid fa-clock"></i> Horario: ' + event.start.format(' HH:mm') +' - '+ event.end.format(' HH:mm') + '</p></div></div>';
-            var $tool = $(tooltip).appendTo('body');
-            $(this).mouseover(function(e) {
-                $(this).css('z-index', 10000);
-                        $tool.fadeIn('1000');
-                        $tool.fadeTo('10', 1.9);
-            }).mousemove(function(e) {
-                $tool.css('top', e.pageY + 10);
+                  var tooltip = '<div class="card text-bg-dark mb-3 calendarTooltip" style="padding-left:10px; border-radius: 8px;position:absolute;z-index:10001;"><div class="card-header text-sm text-center">Consulta Medica</div><div class="card-body"><p class="card-title text-xs"><i class="fa  fa-user"></i> Creado por: ' + event.user_name + '</p><br>  <p class="card-title text-xs"><i class="fa  fa-user"></i> Para: ' + event.description + '</p><p class="card-text text-xs"><i class="fa fa-solid fa-clock"></i> Horario: ' + event.start.format(' HH:mm') +' - '+ event.end.format(' HH:mm') + '</p></div></div>';
+                  var $tool = $(tooltip).appendTo('body');
+                  $(this).mouseover(function(e) {
+                      $(this).css('z-index', 10000);
+                              $tool.fadeIn('1000');
+                              $tool.fadeTo('10', 1.9);
+                  }).mousemove(function(e) {
+                      $tool.css('top', e.pageY + 10);
                 $tool.css('left', e.pageX + 20);
-            });
-        }
+                  });
+            }else{
+              var tooltip = '@can('S-MEDICO') <div class="card text-bg-dark mb-3 calendarTooltip" style="padding-left:10px; border-radius: 8px;position:absolute;z-index:10001;"><div class="card-header text-sm text-center">Consulta Medica</div><div class="card-body"><p class="card-title text-xs"><i class="fa  fa-user"></i> Creado por: ' + event.user_name + '</p><br>  <p class="card-title text-xs"><i class="fa  fa-user"></i> Para: ' + event.description + '</p><p class="card-text text-xs"><i class="fa fa-solid fa-clock"></i> Horario: ' + event.start.format(' HH:mm') +' - '+ event.end.format(' HH:mm') + '</p></div></div> @endcan';
+                  var $tool = $(tooltip).appendTo('body');
+                  $(this).mouseover(function(e) {
+                      $(this).css('z-index', 10000);
+                              $tool.fadeIn('1000');
+                              $tool.fadeTo('10', 1.9);
+                  }).mousemove(function(e) {
+                      $tool.css('top', e.pageY + 10);
+                $tool.css('left', e.pageX + 20);
+                  });
+
+            }
             },
             eventMouseout: function(event, jsEvent) {
             $(this).css('z-index', 8);
@@ -592,14 +612,16 @@ if (overlap.length){
 
 </script>
 <script>
+ 
     
-  function desblock(){
+    function desblock(){
     let titulo= $('#titulo2').val();
     let fi= $('#finicial2').val();
     let ff= $('#ffinal2').val();
+    let desc= $('#description').val();
     
     
-    if(titulo!="" && fi!="" && ff!=""){
+    if(titulo!="" && fi!="" && ff!="" && desc!=""){
       document.querySelector('#editsubmit').disabled = false;
     }else{
       document.querySelector('#editsubmit').disabled = true;
@@ -610,18 +632,24 @@ if (overlap.length){
     let titulo= $('#titulo').val();
     let fi= $('#finicial').val();
     let ff= $('#ffinal').val();
+    let description = $('#description').val();
+
     
     
-    if(titulo!="" && fi!="" && ff!=""){
+    if(titulo!="" && fi!="" && ff!="" && description!=""){
       document.querySelector('#addsubmit').disabled = false;
     }else{
       document.querySelector('#addsubmit').disabled = true;
     }
   }
   </script>
+  <script> 
+
+  </script>
     <script>
    function agregar(){
-  
+   
+    let desc = $('#description').val();
     let id= $('#appointment_id2').val();
     let end= $('#ffinal2').val();
     let start= $('#finicial2').val();
@@ -630,8 +658,13 @@ if (overlap.length){
     let username= $('#username').val();
     let userid= $('#userid').val();
     let rhasta= $('#rhasta').val();
- 
-             $.ajax({
+    let description = $('#description').val();
+
+    if (desc == ""){
+      alert ("Debes llenar el campo del nombre del paciente")
+      
+    }else {
+      $.ajax({
                  url:"{{ route('event.storex') }}",
                  type:"POST",
                  headers:{
@@ -644,18 +677,18 @@ if (overlap.length){
                      userid:userid,
                      username:username,
                     salaid:'1',
-                    salaname:"ddd", 
+                    salaname:description, 
                      type: 'add'
                  },
                  success:function(data)
                  {
-$('#editModal2').modal('hide');
-$('#calendar').fullCalendar('refetchEvents');
-document.getElementById("formadd").reset();
-Swal.fire({
-title: "Evento actualizado",
-text: "",
-icon: "success"
+  $('#editModal2').modal('hide');
+  $('#calendar').fullCalendar('refetchEvents');
+  document.getElementById("formadd").reset();
+  Swal.fire({
+  title: "Evento actualizado",
+  text: "",
+  icon: "success"
 });
                  },
                  error: function (xhr, ajaxOptions, thrownError) {
@@ -667,6 +700,10 @@ text: "No puedes agregar citas sobre horas apartadas",
 });
 }
              });
+    }
+
+ 
+            
             }
 </script>
 <script>
@@ -713,7 +750,7 @@ BorrarActual(id);
     });                       
    }
   }) 
-    }
+}
      </script>
 <script>
 function editar(){
@@ -723,7 +760,7 @@ function editar(){
   let title= "Consulta Médica";
   let userid= $('#userid').val();
   let salaid= '1';
-let salaname=$('#sala').find('option:selected').text();
+let salaname=$('#description').val();
 Swal.fire({
 title: "¿Estás seguro de actualizar tu cita?",
 text: "",
@@ -748,7 +785,7 @@ $.ajax({
            id: id,
            userid:userid,
            salaid:salaid,
-              salaname:salaname, 
+           salaname:description, 
            type: 'update'
        },
        success:function(response)

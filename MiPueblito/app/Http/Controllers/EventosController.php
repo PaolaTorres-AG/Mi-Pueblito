@@ -34,6 +34,7 @@ if($x==0){
                     'recurrence' => 'none',
                     'user_id' => $request->userid,
                     'user_name' => $request->username,
+                    'description'=> $request->salaname,
                   
                 ]);
                 return response()->json($Eventos);
@@ -79,7 +80,7 @@ elseif($request->recurrence=='weekly'){
     $start_month = Carbon::parse($request->start); // returns 2019-06-01
     $diff = $start_month->diffInDays($this_month);  // returns 1
     $diff = $diff+2;
-     $diff=$diff/7;
+    $diff=$diff/7;
    
 }
 elseif($request->recurrence=='monthly'){
