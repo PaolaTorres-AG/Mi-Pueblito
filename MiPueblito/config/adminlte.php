@@ -339,6 +339,14 @@ return [
             'can'=>'MI-PUEBLITO'
         ],
         [
+            'text'    => 'Sistema de Gestión',
+            'url'  => 'MiPueblito/SGC',
+            'icon'    => 'fas fa-fw fa-circle-check',
+            'icon_color' => 'gray-200',
+            'classes'  => 'font-weight-normal text-sm',
+            'can' =>'MI-PUEBLITO',
+        ],
+        [
             'text'    => 'Agendar salas',
             'url'  => 'MiPueblito/Calendario',
             'icon'    => 'fas fa-fw fa-calendar',
