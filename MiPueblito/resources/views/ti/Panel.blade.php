@@ -297,36 +297,53 @@
  $('.js-example-basic-single').select2();
 });
  </script>
-   <script type="text/javascript">
-    $(document).ready(function () {
-        $('#mydatatable tfoot th').each(function () {
-            var title = $(this).text();
-            $(this).html('<input type="text" class="form-control" placeholder="Filtrar.."  style="font-size: 8px;"/>');
-        });
-        var table = $('#mydatatable').DataTable({
-            "dom": 'B<"float-left"l><"float-right"f>t<"float-left"i><"float-right"p><"clearfix">',
-            "responsive": false,
-            "language": {
-                "url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json"
-            },
-            "order": [
-                [0, "desc"]
-            ],
-            "initComplete": function () {
-                this.api().columns().every(function () {
-                    var that = this;
+<script type="text/javascript">
+  $(document).ready(function () {
+      $('#mydatatable tfoot th').each(function () {
+          var title = $(this).text();
+          $(this).html('<input type="text" class="form-control" placeholder="Filtrar.."  style="font-size: 12px;"/>');
+      });
 
-                    $('input', this.footer()).on('keyup change', function () {
-                        if (that.search() !== this.value) {
-                            that
-                                .search(this.value)
-                                .draw();
-                        }
-                    });
-                })
-            },
-            "buttons": [ ]
-        });
-    });
-</script>
+      var table = $('#mydatatable').DataTable({
+            "dom": '<"float-left"B><"float-right"f>t<"float-left"i><"float-right"p><"clearfix">',
+          "responsive": false,
+          "language": {
+              "url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json"
+          },
+          "order": [
+              [0, "desc"]
+          ],
+          "initComplete": function () {
+              this.api().columns().every(function () {
+                  var that = this;
+
+                  $('input', this.footer()).on('keyup change', function () {
+                      if (that.search() !== this.value) {
+                          that
+                              .search(this.value)
+                              .draw();
+                      }
+                  });
+              })
+          },
+       "buttons": [
+          {
+              extend:    'copyHtml5',
+              text:      '<i class="fa fa-copy"></i>',
+              titleAttr: 'Copiar al portapapeles'
+          },
+          {
+              extend:    'excel',
+              text:      '<i class="fa fa-file-excel"></i>',
+              titleAttr: 'Descargar información en excel'
+          },
+          {
+              extend:    'pageLength',
+              text:      '<i class="fa fa-ellipsis"></i>',
+              titleAttr: 'Mostrar resultados'
+          }
+        ],
+      });
+  });
+</script> 
 @stop
