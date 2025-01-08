@@ -17,6 +17,7 @@
 </style>
 @section('content')
 {{-- termina indicadores de validaciones --}}
+<br> 
 <div class="card container col-sm-12 col-md-12 col-lg-10  p-4 rounded">
   <div class="main-body">
         <div class="row gutters-sm">
@@ -200,7 +201,7 @@
   </div> --}}
 {{--  --}}
    <br>
-   <div class="table-responsive  border-4 shadow-lg rounded-lg p-4" id="mydatatable-container" style="border-color:#f2ca28">
+   <div class="table-responsive  border-4 shadow-lg rounded-lg p-4" id="mydatatable-container" style="border-color:#F09F29">
     <h4 class="m-3 text-center">DIRECTORIO</h4>
     <hr>
     <table class="records_list table table-striped table-bordered table-hover" id="mydatatable">

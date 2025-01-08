@@ -21,7 +21,7 @@ font-family: 'Poppins', sans-serif;
 @stop
 
 @section('content')
-<div class="alert  text-center text-lg fw-bold text-white" style="background-color: #5086c1" role="alert">
+<div class="alert  text-center text-lg fw-bold text-white" style="background-color: #F09F29" role="alert">
   Pases de salida
 </div>
 <div class="flash-message">
@@ -129,9 +129,9 @@ font-family: 'Poppins', sans-serif;
 
   @can('INFORME-SM')
   
-  <div class="alert  text-center text-lg fw-bold text-white" style="background-color: #5086c1" role="alert">
+  <div class="alert  text-center text-lg fw-bold text-white" style="background-color: #F09F29" role="alert">
     Historial de pases de salida
-   </div>
+  </div>
   <div class="card">
     <div class="card-header">
    
@@ -160,7 +160,7 @@ font-family: 'Poppins', sans-serif;
                             </div>
                           </div>
                           <div class="d-grid gap-2 col-6 mx-auto mt-3">
-                            <button class="btn btn-primary" type="submit">Buscar</button>
+                            <button class="btn text-white" type="submit" style="background-color: #F09F29">Buscar</button>
                             
                           </div>
                         </form>
@@ -168,7 +168,7 @@ font-family: 'Poppins', sans-serif;
               <div class="col-sm-4 col-md-4 col-lg-4 ">
                 <div class="card text-center mb-3 " >
                     <div class="card-body   shadow-lg">
-                      <h5 class="card-title text-center text-blue font-bold">  Total de pases de salida</h5>
+                      <h5 class="card-title text-center  font-bold" style="color: #F09F29">  Total de pases de salida</h5>
                      <hr style="color: white">
                       <p class="text-center  font-bold text-lg">{{$enf->total + $interna->total}}</p>
                
@@ -178,7 +178,7 @@ font-family: 'Poppins', sans-serif;
               <div class="col-sm-4 col-md-4 col-lg-4 ">
                 <div class="card text-center mb-3 " >
                     <div class="card-body   shadow-lg">
-                      <h5 class="card-title text-center text-blue font-bold">Pases de salida por Enf. general (IMSS)</h5>
+                      <h5 class="card-title text-center font-bold" style="color: #F09F29">Pases de salida por Enf. general (IMSS)</h5>
                      <hr style="color: white">
                       <p class="text-center  font-bold text-lg">{{$enf->total}}</p>
                     </div>
@@ -187,7 +187,7 @@ font-family: 'Poppins', sans-serif;
               <div class="col-sm-4 col-md-4 col-lg-4 ">
                 <div class="card text-center mb-3 " >
                     <div class="card-body   shadow-lg">
-                      <h5 class="card-title text-center text-blue font-bold">Pases de salida por incapacidad interna</h5>
+                      <h5 class="card-title text-center font-bold" style="color: #F09F29">Pases de salida por incapacidad interna</h5>
                      <hr style="color: white">
                       <p class="text-center  font-bold text-lg">{{$interna->total}}</p>
                     </div>

@@ -3,10 +3,11 @@
 @section('content_header')
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
-* {
+    * {
 
 font-family: 'Poppins', sans-serif;
 }
+
 h1#demo-title {
     margin: 30px 0px 80px 0px;
     text-align: center;
@@ -20,7 +21,7 @@ table tr {
     background-color: 
 #c4c6fb;
     border: 
-#0ab53f 1px solid;
+#076b1e 1px solid;
     padding: 10px 20px;
     border-radius: 3px;
     margin-bottom: 15px;
@@ -29,11 +30,16 @@ table tr {
     display: none;
 }
 
+#calendar .fc-today {
+    background: #ebcc9c !important;
+}
+#calendar .fc-bgevent {
+    background: #;
+}
 .fc-day-grid-event .fc-content {
     background: 
-#40ae0e;
-    color: 
-#FFF;
+#F09F29;
+color:#3b686f;
     margin-bottom: 4px;
     padding: 3px;
     border-radius: 5px;
@@ -42,21 +48,20 @@ table tr {
 
 .fc-event,
 .fc-event-dot {
-    background-color: rgb(88, 117, 93);
+    background-color: #F09F29;
 }
 
 .fc-event,
 .fc-event-dot {
-    background-color: 
-rgb(40, 210, 25);
+    background-color:  #F09F29;
 }
 
 .fc-event {
-    border: 1px solid 
-#fff;
+    border: 2px solid 
+#F09F29;
 }
 .fc-past {
-        background-color:#e3e8e5;
+        background-color:#aababd;
     }
 
 
@@ -129,6 +134,9 @@ rgb(40, 210, 25);
   position: relative;
   padding: 20px;
 }
+.fc-resizer.fc-end-resizer {
+    display: none;
+}
 
 </style>
 
@@ -139,10 +147,10 @@ rgb(40, 210, 25);
 
 <input type="hidden" name="username" class="form-control" id="username" value="{{Auth::user()->name}} {{Auth::user()->lastname}}" />
 <input type="hidden" name="userid" class="form-control" id="userid" value="{{Auth::user()->id}}" />
-<div class="container ">
-  <select class="form-select p-3 text-lg text-center mb-2 shadow-md fw-bolder" id="sala" name="sala" width='50%' disabled>
+<div class="container " >
+  <select class="form-select p-3 text-lg text-center mb-2 shadow-md fw-bolder text-white" id="sala" name="sala" width='50%' style="background-color: #F09F29" disabled>
    
-    <option  selected="selected" value="1" >Sala de juntas mi pueblito</option>
+    <option  selected="selected" value="1"  >Sala de juntas mi pueblito</option>
     {{-- <option value="2"></option>
     <option value="3"></option>
     <option value="4"></option> --}}
@@ -372,9 +380,9 @@ $(function() {
          
           eventRender: function(event, element) {
                 if(event.lugar == "1") {
-                    element.css('background-color', '#9fe71a');
-                    element.css('color', '#537e02');
-                    element.css('font-weight', 'bold');
+                    element.css('background-color', '#F09F29');
+                    element.css('color', '');
+                    element.css('font-weight');
                 }
                 else if(event.lugar == "2")
                 {

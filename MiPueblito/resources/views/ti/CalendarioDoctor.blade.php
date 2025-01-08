@@ -32,14 +32,14 @@ table tr {
 }
 
 #calendar .fc-today {
-    background: #e0f0f6 !important;
+    background: #ebcc9c !important;
 }
 #calendar .fc-bgevent {
-    background: #000000;
+    background: #;
 }
 .fc-day-grid-event .fc-content {
     background: 
-#add8e6;
+#F09F29;
 color:#3b686f;
     margin-bottom: 4px;
     padding: 3px;
@@ -49,18 +49,17 @@ color:#3b686f;
 
 .fc-event,
 .fc-event-dot {
-    background-color: rgb(88, 117, 93);
+    background-color: #F09F29;
 }
 
 .fc-event,
 .fc-event-dot {
-    background-color: 
-rgba(79, 191, 244, 0.51);
+    background-color:  #F09F29;
 }
 
 .fc-event {
     border: 2px solid 
-#c2d8e1;
+#F09F29;
 }
 .fc-past {
         background-color:#aababd;
@@ -146,9 +145,10 @@ rgba(79, 191, 244, 0.51);
 <input type="hidden" name="username" class="form-control" id="username" value= "{{Auth::user()->name}} {{Auth::user()->lastname}}" />
 <input type="hidden" name="userid" class="form-control" id="userid" value="{{Auth::user()->nomina}}" />
 <div class="container">
-    <div class="alert  text-center text-lg fw-bold text-black"  style="background-color: #ffffff" role="alert">
+    <div class="alert  text-center text-lg fw-bold text-white"  style="background-color: #F09F29" role="alert">
         Agenda de citas medicas
     </div>
+
 </div>
 
 <div class="container ">

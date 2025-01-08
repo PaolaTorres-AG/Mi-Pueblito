@@ -24,11 +24,9 @@
     @endif
   @endforeach
 </div> <!-- end .flash-message -->
-<div class=" m-0  card bg-gradient-to-tr from-gray-500 to-gray-900  rounded-lg  text-white font-bold text-md">
-    <div class="card-body m-2 p-0">
-    <h5 class="text-center">Generar Solicitud </h5>
-    </div>
-  </div>
+<div class="alert  text-center text-lg fw-bold text-white" style="background-color: #F09F29" role="alert">
+    Generar solicitud 
+</div>
 <div class="card p-2 m-0">
     <form class="rounded" method="POST"  action="{{ route('Panelp') }}" enctype="multipart/form-data">
       @csrf
@@ -94,21 +92,19 @@
     <label for="exampleInputEmail1" class="form-label">Adjuntar imagen de evidencia (Opcional).</label>
     <input type="file" id="img" class="form-control"  name="img" accept="image/*">
 </div>
-<div class="d-flex justify-content-center"><button type="submit"  class="btn btn-dark"  >Aceptar</button></div>
+<div class="d-flex justify-content-center"><button type="submit"  class="btn text-white" style="background-color: #F09F29" >Aceptar</button></div>
 </div>
 </div>
     
     </div>
 
        </form>
+  <br>     
   </div>
-  <div class=" mt-4 p-0 card bg-gradient-to-tr   from-gray-500 to-gray-900  rounded-lg  text-white font-bold text-md">
-    <div class="card-body m-2 p-0">
-        <h5 class="text-center"> Historial</h5>
-    </div>
+  <div class="alert  text-center text-lg fw-bold text-white" style="background-color: #F09F29" role="alert">
+    Historial 
   </div>
-
-  {{--  --}}
+</br>
   <div class="card ">
     <div class="table-responsive  p-3" id="mydatatable-container">
         <table class="records_list table table-striped table-bordered table-hover text-xs" id="mydatatable">
