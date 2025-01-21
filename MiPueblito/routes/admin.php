@@ -31,6 +31,8 @@ Route::post('/UpdatePassword',[HomeController::class, 'UpdatePassword'])->middle
 Route::get('/Compras',[HomeController::class, 'compras'])->name('Compras');
 /*******************SGC******************************* */
 Route::get('/SGC',[HomeController::class, 'SGC'])->name('SGC');
+/*******************Etiquetas******************************* */
+Route::get('/Etiquetas',[HomeController::class, 'Etiquetas'])->name('Etiquetas');
 /*******************SISTEMAS******************************* */
 Route::get('/Sistemas',[HomeController::class, 'Sistemas'])->name('Sistemas');
 Route::post('/Panel',[HomeController::class, 'Panelp'])->name('Panelp'); 

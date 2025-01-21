@@ -385,7 +385,7 @@
 @stop
 
 @section('css')
-<link rel="icon" href="http://mipueblitofoods.net/public/images/icono.png"> 
+<link rel="icon" href="{{asset('images/icono.png')}}">
 <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">

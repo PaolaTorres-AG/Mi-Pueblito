@@ -347,6 +347,14 @@ return [
             'can' =>'MI-PUEBLITO',
         ],
         [
+            'text'    => 'Sistema de Etiquetas',
+            'url'  => 'MiPueblito/Etiquetas',
+            'icon'    => 'fas fa-fw fa-tag',
+            'icon_color' => 'gray-200',
+            'classes'  => 'font-weight-normal text-sm',
+            'can' =>'Etiquetas',
+        ],
+        [
             'text'    => 'Agendar salas',
             'url'  => 'MiPueblito/Calendario',
             'icon'    => 'fas fa-fw fa-calendar',

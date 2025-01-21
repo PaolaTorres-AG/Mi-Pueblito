@@ -195,7 +195,7 @@ button#clear2 span {
 @stop
 @section('css')
 
-<link rel="icon" href="http://mipueblitofoods.net/public/images/icono.png"> 
+<link rel="icon" href="{{asset('images/icono.png')}}">
 <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

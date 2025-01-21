@@ -3,7 +3,7 @@
 @section('content_header')
 
 <div class="ratio ratio-16x9">
-    <iframe src="https://apps.powerapps.com/play/e/default-287a3752-3f87-480e-82a7-8567bb2280ea/a/48712402-c0e5-4798-96bd-2a7f3c404093?tenantId=287a3752-3f87-480e-82a7-8567bb2280ea&hint=e8e900ba-208b-4686-95a5-3f910064a37a&sourcetime=1725848426917&hidenavbar=true" title="SISTEMA DE COMPRAS" allowfullscreen></iframe>
+    <iframe src="https://apps.powerapps.com/play/e/default-287a3752-3f87-480e-82a7-8567bb2280ea/a/58c9caa7-2660-4563-8b67-2dd506799718?tenantId=287a3752-3f87-480e-82a7-8567bb2280ea&sourcetime=1737131777454" title="SISTEMA DE ETIQUETAS" allowfullscreen></iframe>
   </div>
 @stop
 @section('css')
