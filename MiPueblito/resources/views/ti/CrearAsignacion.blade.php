@@ -144,13 +144,8 @@ font-family: 'Poppins', sans-serif;
 
                   <div class="col-lg-4">
                     <label for="" class="form-label fst-italic ">Sistema operativo</label>
-                    <select class="form-select" name="sod" id="sod" value="{{ old('estadod') }}" required>
-                      <option  value="Windows">Windows</option>
-                      <option  value="Mac Os">Mac OS</option>
-                             <option  value="Unix">Unix</option>
-                                    <option  value="Linux">Linux</option>
-                    </select>
-                    
+                    <input type="text" class="form-control fw-light" id="sod" name="sod" value="{{old('estadod')}}" required>
+             
                   </div>
 
                   <div class="col-lg-4">
